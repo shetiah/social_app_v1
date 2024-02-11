@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175597197245",
+    "project_id": "chatappudemy-2d357",
+    "storage_bucket": "chatappudemy-2d357.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175597197245:android:fa9b8fa5d501dd6793a4d4",
+        "android_client_info": {
+          "package_name": "com.example.chatappv1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq0WJJyo1lqLD0ZrEm_dL6tRBlrrcQ1yo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
