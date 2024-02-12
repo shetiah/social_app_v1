@@ -1,7 +1,8 @@
+import 'package:chatappv1/shared/cubit/app_cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../cubit/app_cubit/cubit.dart';
+import '../../../models/post_model.dart';
 
 Widget defaultFormField({
   required TextEditingController controller,
@@ -332,225 +333,177 @@ List<String> listOfStrings = [
   'Settings',
 ];
 
-// Widget buildPostItem(PostModel model, context) => Card(
-//   clipBehavior: Clip.antiAliasWithSaveLayer,
-//   elevation: 5.0,
-//   margin: EdgeInsets.symmetric(
-//     horizontal: 8.0,
-//   ),
-//   child: Padding(
-//     padding: const EdgeInsets.all(10.0),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Row(
-//           children: [
-//             CircleAvatar(
-//               radius: 25.0,
-//               backgroundImage: NetworkImage(
-//                 '${model.image}',
-//               ),
-//             ),
-//             SizedBox(
-//               width: 15.0,
-//             ),
-//             Expanded(
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Row(
-//                     children: [
-//                       Text(
-//                         '${model.name}',
-//                         style: TextStyle(
-//                           height: 1.4,
-//                         ),
-//                       ),
-//                       SizedBox(
-//                         width: 5.0,
-//                       ),
-//                       Icon(
-//                         Icons.check_circle,
-//                         color: defaultColor,
-//                         size: 16.0,
-//                       ),
-//                     ],
-//                   ),
-//                   Text(
-//                     '${model.dateTime}',
-//                     style: Theme.of(context).textTheme.caption.copyWith(
-//                       height: 1.4,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             SizedBox(
-//               width: 15.0,
-//             ),
-//             IconButton(
-//               icon: Icon(
-//                 Icons.more_horiz,
-//                 size: 16.0,
-//               ),
-//               onPressed: () {},
-//             ),
-//           ],
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.symmetric(
-//             vertical: 15.0,
-//           ),
-//           child: Container(
-//             width: double.infinity,
-//             height: 1.0,
-//             color: Colors.grey[300],
-//           ),
-//         ),
-//         Text(
-//           '${model.text}',
-//           style: Theme.of(context).textTheme.subtitle1,
-//         ),
-//         if(model.postImage != '')
-//           Padding(
-//             padding: const EdgeInsetsDirectional.only(
-//                 top: 15.0
-//             ),
-//             child: Container(
-//               height: 140.0,
-//               width: double.infinity,
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(
-//                   4.0,
-//                 ),
-//                 image: DecorationImage(
-//                   image: NetworkImage(
-//                     '${model.postImage}',
-//                   ),
-//                   fit: BoxFit.cover,
-//                 ),
-//               ),
-//             ),
-//           ),
-//         Padding(
-//           padding: const EdgeInsets.symmetric(
-//             vertical: 5.0,
-//           ),
-//           child: Row(
-//             children: [
-//               Expanded(
-//                 child: InkWell(
-//                   child: Padding(
-//                     padding: const EdgeInsets.symmetric(
-//                       vertical: 5.0,
-//                     ),
-//                     child: Row(
-//                       children: [
-//                         Icon(
-//                           IconBroken.Heart,
-//                           size: 16.0,
-//                           color: Colors.red,
-//                         ),
-//                         SizedBox(
-//                           width: 5.0,
-//                         ),
-//                         Text(
-//                           '0',
-//                           style: Theme.of(context).textTheme.caption,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   onTap: () {},
-//                 ),
-//               ),
-//               Expanded(
-//                 child: InkWell(
-//                   child: Padding(
-//                     padding: const EdgeInsets.symmetric(
-//                       vertical: 5.0,
-//                     ),
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.end,
-//                       children: [
-//                         Icon(
-//                           IconBroken.Chat,
-//                           size: 16.0,
-//                           color: Colors.amber,
-//                         ),
-//                         SizedBox(
-//                           width: 5.0,
-//                         ),
-//                         Text(
-//                           '0 comment',
-//                           style: Theme.of(context).textTheme.caption,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   onTap: () {},
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.only(
-//             bottom: 10.0,
-//           ),
-//           child: Container(
-//             width: double.infinity,
-//             height: 1.0,
-//             color: Colors.grey[300],
-//           ),
-//         ),
-//         Row(
-//           children: [
-//             Expanded(
-//               child: InkWell(
-//                 child: Row(
-//                   children: [
-//                     CircleAvatar(
-//                       radius: 18.0,
-//                       backgroundImage: NetworkImage(
-//                         '${SocialCubit.get(context).userModel.image}',
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       width: 15.0,
-//                     ),
-//                     Text(
-//                       'write a comment ...',
-//                       style:
-//                       Theme.of(context).textTheme.caption.copyWith(),
-//                     ),
-//                   ],
-//                 ),
-//                 onTap: () {},
-//               ),
-//             ),
-//             InkWell(
-//               child: Row(
-//                 children: [
-//                   Icon(
-//                     IconBroken.Heart,
-//                     size: 16.0,
-//                     color: Colors.red,
-//                   ),
-//                   SizedBox(
-//                     width: 5.0,
-//                   ),
-//                   Text(
-//                     'Like',
-//                     style: Theme.of(context).textTheme.caption,
-//                   ),
-//                 ],
-//               ),
-//               onTap: () {},
-//             ),
-//           ],
-//         ),
-//       ],
-//     ),
-//   ),
-// );
+Widget buildPostItem(Post postModel, context) =>  Card(
+  clipBehavior: Clip.antiAliasWithSaveLayer,
+  elevation: 5.0,
+  // color: Colors.grey,
+  child: Padding(
+    padding: EdgeInsets.all(
+        AppCubit.get(context).getScreenWidth(context) * .03),
+    child: SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius:
+                AppCubit.get(context).getScreenWidth(context) * .1,
+                backgroundColor: Colors.blue,
+                backgroundImage:  NetworkImage(
+               postModel.userAvatar,
+                ),
+              ),
+              SizedBox(
+                  width: AppCubit.get(context).getScreenWidth(context) *
+                      .03),
+              Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+                children: [
+                  Text(postModel.userName,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      )),
+                  Text('2021-11-17 ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.grey[500])),
+                ],
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(
+                AppCubit.get(context).getScreenWidth(context) * .03),
+            child: Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 5.0,
+              child: Image(
+                image: NetworkImage(
+                  'https://img.freepik.com/free-photo/metaverse-concept-collage-design_23-2149419860.jpg?w=1800&t=st=1707645438~exp=1707646038~hmac=9fa4dc3adaf790326c80c5d46261b4d4e420eefcd88e915f24e6541c12cc40b6',
+                ),
+                fit: BoxFit.cover,
+                height:
+                AppCubit.get(context).getScreenHeight(context) * .32,
+                width: double.infinity,
+              ),
+            ),
+          ),  SizedBox(
+            height: AppCubit.get(context).getScreenWidth(context) * .04,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text('Abdelrahaman shetiah', style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15
+                  )),
+                ],
+              ),
+              SizedBox(
+                height: AppCubit.get(context).getScreenWidth(context) * .03,
+              ),
+              Wrap(
+                children: [
+                  Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: AppCubit.get(context).getScreenWidth(context) * .04,
+          ),
+          Row(
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.heart_broken_sharp,
+                  ),
+                  SizedBox(
+                    width: AppCubit.get(context).getScreenWidth(context) *
+                        .03,
+                  ),
+                  const Text(
+                    '273',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: AppCubit.get(context).getScreenWidth(context) *
+                        .01,
+                  ),
+                  Text(
+                    'Likes',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width:
+                AppCubit.get(context).getScreenWidth(context) * .04,
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.comment_sharp,
+                  ),
+                  SizedBox(
+                    width: AppCubit.get(context).getScreenWidth(context) *
+                        .03,
+                  ),
+                  const Text(
+                    '23',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: AppCubit.get(context).getScreenWidth(context) *
+                        .01,
+                  ),
+                  Text(
+                    'Comments',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  Icon(
+                    Icons.ios_share,
+                  ),
+                  SizedBox(
+                    width: AppCubit.get(context).getScreenWidth(context) *
+                        .01,
+                  ),
+                  Icon(
+                    Icons.bookmark_border,
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+    ),
+  ),
+);

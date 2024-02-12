@@ -1,3 +1,4 @@
+import 'package:chatappv1/models/post_model.dart';
 import 'package:chatappv1/models/user_model.dart';
 import 'package:chatappv1/modules/post.dart';
 import 'package:chatappv1/modules/settings.dart';
@@ -36,7 +37,7 @@ var listViewController=ScrollController();
     const SettingsScreen(),
   ];
 
-
+List<Post> posts=[];
   int bottomNavIndex = 0;
   double width=0;
 

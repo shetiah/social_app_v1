@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../shared/components/components/my_main_components.dart';
 import '../shared/cubit/app_cubit/cubit.dart';
 import '../shared/cubit/app_cubit/states.dart';
 
@@ -17,51 +19,238 @@ class UserHomeScreen extends StatelessWidget {
         return Scaffold(
             body: Column(
           children: [
-            Padding(
-              padding:  EdgeInsets.symmetric(horizontal: cubit.getScreenWidth(context)*.006),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 5.0,
-                      child: Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        children: [
-                          const Image(
-                            image: NetworkImage(
-                              'https://img.freepik.com/free-photo/metaverse-concept-collage-design_23-2149419860.jpg?w=1800&t=st=1707645438~exp=1707646038~hmac=9fa4dc3adaf790326c80c5d46261b4d4e420eefcd88e915f24e6541c12cc40b6',
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: cubit.getScreenWidth(context) * .006),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        elevation: 5.0,
+                        child: Stack(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          children: [
+                            const Image(
+                              image: NetworkImage(
+                                'https://img.freepik.com/free-photo/metaverse-concept-collage-design_23-2149419860.jpg?w=1800&t=st=1707645438~exp=1707646038~hmac=9fa4dc3adaf790326c80c5d46261b4d4e420eefcd88e915f24e6541c12cc40b6',
+                              ),
+                              fit: BoxFit.cover,
+                              height: 200.0,
+                              width: double.infinity,
                             ),
-                            fit: BoxFit.cover,
-                            height: 200.0,
-                            width: double.infinity,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'communicate with friends',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'communicate with friends',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    // ListView.separated(
-                    //   shrinkWrap: true,
-                    //   physics: NeverScrollableScrollPhysics(),
-                    //   itemBuilder: (context, index) => buildPostItem(SocialCubit.get(context).posts[index],context),
-                    //   separatorBuilder: (context, index) => SizedBox(
-                    //     height: 8.0,
-                    //   ),
-                    //   itemCount:cubit.posts.length,
-                    // ),
-                  ],
+                      Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        elevation: 5.0,
+                        // color: Colors.grey,
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                              cubit.getScreenWidth(context) * .03),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius:
+                                          cubit.getScreenWidth(context) * .1,
+                                      backgroundColor: Colors.blue,
+                                      backgroundImage: const NetworkImage(
+                                        'https://img.freepik.com/free-photo/metaverse-concept-collage-design_23-2149419860.jpg?w=1800&t=st=1707645438~exp=1707646038~hmac=9fa4dc3adaf790326c80c5d46261b4d4e420eefcd88e915f24e6541c12cc40b6',
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        width: cubit.getScreenWidth(context) *
+                                            .03),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Abdelrahman shetiah ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                )),
+                                        Text('2021-11-17 ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall
+                                                ?.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15,
+                                                    color: Colors.grey[500])),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      cubit.getScreenWidth(context) * .03),
+                                  child: Card(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    elevation: 5.0,
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'https://img.freepik.com/free-photo/metaverse-concept-collage-design_23-2149419860.jpg?w=1800&t=st=1707645438~exp=1707646038~hmac=9fa4dc3adaf790326c80c5d46261b4d4e420eefcd88e915f24e6541c12cc40b6',
+                                      ),
+                                      fit: BoxFit.cover,
+                                      height:
+                                          cubit.getScreenHeight(context) * .32,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                ),  SizedBox(
+                                  height: cubit.getScreenWidth(context) * .04,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('Abdelrahaman shetiah', style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: cubit.getScreenWidth(context) * .03,
+                                    ),
+                                    Wrap(
+                                      children: [
+                                        Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: cubit.getScreenWidth(context) * .04,
+                                ),
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.heart_broken_sharp,
+                                        ),
+                                        SizedBox(
+                                          width: cubit.getScreenWidth(context) *
+                                              .03,
+                                        ),
+                                        const Text(
+                                          '273',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: cubit.getScreenWidth(context) *
+                                              .01,
+                                        ),
+                                        Text(
+                                          'Likes',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          cubit.getScreenWidth(context) * .04,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.comment_sharp,
+                                        ),
+                                        SizedBox(
+                                          width: cubit.getScreenWidth(context) *
+                                              .03,
+                                        ),
+                                        const Text(
+                                          '23',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: cubit.getScreenWidth(context) *
+                                              .01,
+                                        ),
+                                        Text(
+                                          'Comments',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.ios_share,
+                                        ),
+                                        SizedBox(
+                                          width: cubit.getScreenWidth(context) *
+                                              .01,
+                                        ),
+                                        Icon(
+                                          Icons.bookmark_border,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // buildPostItem()
+                      // buildPostItem(
+                      //
+                      // ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => buildPostItem(
+                            AppCubit.get(context).posts[index], context),
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 8.0,
+                        ),
+                        itemCount:  AppCubit.get(context).posts.length,
+                      ),
+                      SizedBox(
+                        height: cubit.getScreenHeight(context) * .1,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
