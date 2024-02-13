@@ -103,7 +103,12 @@ Widget defaultButton({
         ),
       ),
     );
-
+void navigateTo(context, widget) => Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => widget,
+  ),
+);
 void navigateAndFinish(
   context,
   widget,
@@ -182,7 +187,7 @@ Widget customBottomNavbar1(context) {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             if(index==4) {
-              AppCubit.get(context).width= AppCubit.get(context).getScreenWidth(context) * .293;
+              AppCubit.get(context).width= AppCubit.get(context).getScreenWidth(context) * .27;
             }
             else{
               AppCubit.get(context).width= AppCubit.get(context).getScreenWidth(context) * .27;
@@ -322,7 +327,7 @@ List<IconData> listOfIcons = [
   Icons.post_add,
   Icons.supervised_user_circle_sharp,
   Icons.chat_sharp,
-  Icons.settings,
+  Icons.person,
 ];
 
 List<String> listOfStrings = [
@@ -330,7 +335,7 @@ List<String> listOfStrings = [
   'Posts',
   'Users',
   'Chats',
-  'Settings',
+  'Profile',
 ];
 
 Widget buildPostItem(Post postModel, context) =>  Card(

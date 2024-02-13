@@ -1,3 +1,4 @@
+import 'package:chatappv1/modules/post_screen.dart';
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/cubit.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
@@ -15,48 +16,7 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
-          // return Scaffold(
-          //     appBar: AppBar(
-          //       actions: [
-          //         TextButton(
-          //             onPressed: () {
-          //               cubit.signOut(context);
-          //             },
-          //             child: Text("Logout"))
-          //       ],
-          //     ),
-          //     body: Column(
-          //       children: [
-          //        const SizedBox(
-          //           height: 20,
-          //         ),
-          //         ConditionalBuilder(
-          //           builder: (context) => SafeArea(
-          //             child: Center(
-          //               child: Column(
-          //                 children: [
-          //                   Text(userModel.email),
-          //                 const  SizedBox(
-          //                     height: 20,
-          //                   ),
-          //                   Text(userModel.name),
-          //                  const SizedBox(
-          //                     height: 20,
-          //                   ),
-          //                   Text(userModel.phone),
-          //                 const  SizedBox(
-          //                     height: 20,
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ),
-          //           condition: (state is! GetUserLoadingState) &&(uId !='' && uId!=null),
-          //           fallback: (BuildContext context) =>
-          //              const CircularProgressIndicator(),
-          //         ),
-          //       ],
-          //     ));
+
           return Scaffold(
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(cubit.getScreenWidth(context)*.14),
@@ -76,7 +36,11 @@ class HomeScreen extends StatelessWidget {
                     ]
                     ),),
                   centerTitle: true,
-
+                  actions: [
+                   defaultTextButton(function: (){
+                     cubit.signOut(context);
+                   }, text: 'LOG OUT')
+                  ],
                 ),
               ),
               body: Stack(

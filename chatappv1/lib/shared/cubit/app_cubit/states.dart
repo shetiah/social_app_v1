@@ -27,3 +27,6 @@ class SignOutErrorState extends AppStates
 // class ReachScreen extends AppStates {}
 class ChangeBottomNavItems extends AppStates{}
 
+class ChangeBottomToPostScreen extends AppStates{}
+class BottomSheetPressed extends AppStates{}
+

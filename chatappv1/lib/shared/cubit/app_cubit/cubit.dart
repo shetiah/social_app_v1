@@ -1,7 +1,7 @@
 import 'package:chatappv1/models/post_model.dart';
 import 'package:chatappv1/models/user_model.dart';
-import 'package:chatappv1/modules/post.dart';
-import 'package:chatappv1/modules/settings.dart';
+import 'package:chatappv1/modules/post_screen.dart';
+import 'package:chatappv1/modules/profile_screen.dart';
 import 'package:chatappv1/modules/user_home.dart';
 import 'package:chatappv1/modules/users.dart';
 import 'package:chatappv1/shared/components/constants/const.dart';
@@ -9,7 +9,7 @@ import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
 import 'package:chatappv1/shared/network/local/cacheHelper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../modules/chats.dart';
@@ -28,29 +28,39 @@ class AppCubit extends Cubit<AppStates> {
   getScreenHeight(context) {
     return MediaQuery.of(context).size.height;
   }
-var listViewController=ScrollController();
+  bool isBottomSheetShownPostScreen=false;
+  var scaffoldKeyPostScreen=GlobalKey<ScaffoldState>();
+
+  ScrollController listViewController = ScrollController();
+
   List<Widget> screens = [
     const UserHomeScreen(),
     const PostScreen(),
     const UsersScreen(),
     const ChatsScreen(),
-    const SettingsScreen(),
+    const ProfileScreen(),
   ];
-
-List<Post> posts=[];
+ var controller = TextEditingController();
+  List<Post> posts = [];
   int bottomNavIndex = 0;
-  double width=0;
+  double width = 0;
+  bool expands =true;
+  // double containerSize=getScreenHeight(context) * .2;
+ void bottomSheetPress()
+ {
+   expands=!expands;
+   emit(BottomSheetPressed());
+ }
+// Widget defHomeWidget=cubit.bottomNavIndex==1? navigateTo(context,PostScreen()) :
+  void changeIndex(index, context) {
+    if (index == 1) {
+      navigateTo(context, const PostScreen());
+      emit(ChangeBottomToPostScreen());
+    } else {
+      bottomNavIndex = index;
 
-  void changeIndex(index,context) {
-    bottomNavIndex = index;
-    // if(bottomNavIndex==3)
-    //   {
-    //     width=getScreenWidth(context) * .333;
-    //   }
-    // else{
-    //   width=AppCubit.get(context).getScreenWidth(context) * .27;
-    // }
-    emit(ChangeBottomNavItems());
+      emit(ChangeBottomNavItems());
+    }
   }
 
   Future<void> signOut(context) async {

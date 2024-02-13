@@ -4,6 +4,7 @@ class Post {
  String image;
  String caption;
  String date;
+
   List<String> comments=[];
   int likes=0;
   bool likedByUser=false;
