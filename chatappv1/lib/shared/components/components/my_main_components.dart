@@ -37,14 +37,18 @@ Widget defaultFormField({
         return validate(s);
       },
       decoration: InputDecoration(
-        prefixIconColor: Colors.amber,
+        prefixIconColor:Color.fromARGB(200, 43, 49, 162) ,
         suffixIconColor: Colors.black,
         labelText: label,
         labelStyle: const TextStyle(
-          color: Colors.amber,
+          color: Color.fromARGB(200, 43, 49, 162),
+          fontWeight: FontWeight.w600
+            ,
+          fontSize: 17
         ),
         prefixIcon: Icon(
           prefix,
+          size: MediaQuery.of(context).size.width*.07,
         ),
         suffixIcon: suffix != null
             ? IconButton(
@@ -512,3 +516,6 @@ Widget buildPostItem(Post postModel, context) =>  Card(
     ),
   ),
 );
+
+
+// Widget UserCard()=> Contanin

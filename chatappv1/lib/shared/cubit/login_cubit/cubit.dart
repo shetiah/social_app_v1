@@ -2,6 +2,7 @@ import 'package:chatappv1/layout/home_layout.dart';
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
 import 'package:chatappv1/shared/cubit/login_cubit/states.dart';
 import 'package:chatappv1/shared/network/local/cacheHelper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,20 +19,26 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> userLogin({
     required String email,
     required String password,
-    required  context,
+    required context,
   }) async {
     emit(LoginLoadingState());
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((v) {
-          uId=v.user?.uid;
-          CacheHelper.saveData(key: 'uId', value: v.user?.uid);
-          navigateAndFinish(context, const HomeScreen());
+      uId = v.user?.uid;
+      var x=FirebaseFirestore.instance.collection('users').where('userName',isEqualTo: 'none').snapshots().isEmpty;
+      // var y=FirebaseFirestore.instance.collection('users').where('userName',isNotEqualTo:'none').snapshots();
+     //  x.then((value) {
+     //   print(value);
+     // });
+     //  FirebaseFirestore.instance.collection('user').get('')
+
+      CacheHelper.saveData(key: 'uId', value: v.user?.uid);
+      navigateAndFinish(context, const HomeScreen());
       emit(LoginFinishedState());
     }).catchError((onError) {
       emit(LoginErrorState(onError.toString()));
     });
-
   }
 
   IconData suffix = Icons.visibility_outlined;

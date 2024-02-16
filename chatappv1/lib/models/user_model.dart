@@ -1,27 +1,43 @@
+import 'package:chatappv1/models/post_model.dart';
+
 class UserModel {
   late String name;
-  late String phone;
   late String email;
   late String uId;
-  bool emailVerfied = false;
-  UserModel(this.name, this.phone, this.email, this.uId,
-      {this.emailVerfied = false});
+  late String userName;
+   String img='none';
+   String coverImg='none';
+   String bio='none';
 
-  UserModel.fromJson(Map<String, dynamic> ?model) {
+  List<Post> myPosts = [];
+  List<UserModel> friends = [];
+
+  UserModel(
+      this.name, this.email, this.uId, this.userName, this.img, this.coverImg,this.bio);
+
+  UserModel.fromJson(Map<String, dynamic>? model) {
     name = model?['name'];
-    phone = model?['phone'];
     email = model?['email'];
     uId = model?['uId'];
-    emailVerfied = model?['emailVerfied'];
+    userName = model?['userName'];
+    img = model?['img'];
+    coverImg = model?['coverImg'];
+    // myPosts = model?['myPosts'];
+    // friends = model?['friends'];
+    bio=model?['bio'];
   }
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'phone': phone,
       'email': email,
       'uId': uId,
-      'emailVerfied': emailVerfied
+      'userName': userName,
+      'img': img,
+      'coverImg': coverImg,
+      'myPosts': {},
+      'friends': {},
+      'bio' :bio
     };
   }
 }

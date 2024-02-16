@@ -17,6 +17,10 @@ class RegisterErrorState extends RegisterStates {
 
 class UserCreationFinishedState extends RegisterStates {}
 class UserCreationLoadingState extends RegisterStates {}
+class TakeUserNameState extends RegisterStates {}
+class ProfileImagePickedSuccessState extends RegisterStates {}
+class ProfileImagePickedErrorState extends RegisterStates {}
+class ProfileImagePickedLoadingState extends RegisterStates {}
 
 class UserCreationErrorState extends RegisterStates {
   final String error;
