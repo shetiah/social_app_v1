@@ -5,12 +5,13 @@ import 'package:chatappv1/models/user_model.dart';
 import 'package:chatappv1/modules/post_screen.dart';
 import 'package:chatappv1/modules/profile_screen.dart';
 import 'package:chatappv1/modules/user_home.dart';
-import 'package:chatappv1/modules/users_serach_screen.dart';
+import 'package:chatappv1/modules/users_search_screen.dart';
 import 'package:chatappv1/shared/components/constants/const.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
 import 'package:chatappv1/shared/network/local/cacheHelper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,10 +59,6 @@ class AppCubit extends Cubit<AppStates> {
     emit(BottomSheetPressed());
   }
 
-  bool isuNameTake(String uName, String uId) {
-    return true;
-  }
-
 // Widget defHomeWidget=cubit.bottomNavIndex==1? navigateTo(context,PostScreen()) :
   void changeIndex(index, context) {
     if (index == 1) {
@@ -74,9 +71,7 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  // Map<String, String> allUserIds = {};
-
-  late File profileImageEdit;
+  late File profileImageFile;
   var picker = ImagePicker();
 
   Future<void> editProfilePhoto() async {
@@ -86,9 +81,9 @@ class AppCubit extends Cubit<AppStates> {
         source: ImageSource.gallery,
       );
       if (image != null) {
-        profileImageEdit = File(image.path);
-        userModel.img = profileImageEdit.path;
+        profileImageFile = File(image.path);
         print(image.path);
+       await updateProfileImageFireStorage();
         emit(ProfileEditSuccessState());
       } else {
         print('No image selected.');
@@ -97,13 +92,17 @@ class AppCubit extends Cubit<AppStates> {
     } catch (error) {
       emit(ProfileEditErrorState());
     }
+  }
 
+  Future<void> updateProfileImageOnFireStore(
+      {required String imagePath}) async {
     try {
       emit(ProfileUpdateLoadingState());
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uId)
-          .update({'img': userModel.img}).then((value) {
+          .update({'img': imagePath}).then((value) {
+        userModel.img = imagePath;
         emit(ProfileUpdateSuccessState());
       });
     } catch (nError) {
@@ -111,7 +110,25 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  late File coverImage;
+  Future<void> updateProfileImageFireStorage() async {
+    emit(UploadProfileImageOnStoreLoading());
+   await storageRef
+        .child(
+            'users/images/${Uri.file(profileImageFile.path).pathSegments.last}')
+        .putFile(profileImageFile)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        updateProfileImageOnFireStore(imagePath: value);
+        emit(UploadProfileImageOnStoreSuccess());
+      }).catchError((error) {
+        emit(UploadProfileImageOnStoreError());
+      });
+    }).catchError((error) {
+      emit(UploadProfileImageOnStoreError());
+    });
+  }
+
+  late File coverImagePath;
 
   Future<void> editCoverPhoto() async {
     emit(CoverEditLoadingState());
@@ -120,9 +137,11 @@ class AppCubit extends Cubit<AppStates> {
         source: ImageSource.gallery,
       );
       if (image != null) {
-        coverImage = File(image.path);
-        userModel.coverImg = coverImage.path;
+        coverImagePath = File(image.path);
+        // userModel.coverImg = coverImagePath.path;
         // print(image.path);
+        // await updateCoverImageOnFireStore();
+        updateCoverImageOnFIreStorage();
         emit(CoverEditSuccessState());
       } else {
         print('No image selected.');
@@ -131,19 +150,39 @@ class AppCubit extends Cubit<AppStates> {
     } catch (error) {
       emit(CoverEditErrorState());
     }
+  }
 
+  Future<void> updateCoverImageOnFireStore({required imagePath}) async {
     try {
       emit(CoverUpdateLoadingState());
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uId)
-          .update({'coverImg': userModel.coverImg}).then((value) {
+          .update({'coverImg': imagePath}).then((value) {
+        userModel.coverImg = imagePath;
         emit(CoverUpdateSuccessState());
       });
     } catch (nError) {
       emit(CoverUpdateErrorState(nError.toString()));
     }
+  }
 
+  void updateCoverImageOnFIreStorage() {
+    emit(UploadCoverImageOnStoreLoading());
+    storageRef
+        .child(
+            'users/images/${Uri.file(coverImagePath.path).pathSegments.last}')
+        .putFile(coverImagePath)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        updateCoverImageOnFireStore(imagePath: value);
+        emit(UploadCoverImageOnStoreSuccess());
+      }).catchError((error) {
+        emit(UploadCoverImageOnStoreError());
+      });
+    }).catchError((error) {
+      emit(UploadCoverImageOnStoreError());
+    });
   }
 
   bool editingBio = false;
@@ -208,27 +247,30 @@ class AppCubit extends Cubit<AppStates> {
       emit(GetUserErrorState(error.toString()));
     }
   }
-// var late allResults;
-  List<UserCard> usersCards=[];
-  TextEditingController searchController = TextEditingController();
-   String searchedName='';
-  Future<void> searching(String v)
-  async {
-    usersCards=[];
-    searchedName=v;
-    var data=await FirebaseFirestore.instance.collection('users').orderBy('name').get();
-    data.docs.forEach((element) {
-     var userTemp= element.data() ;
-     if(userTemp['name'].toString()
-         .startsWith(searchedName))
-       {
-         usersCards.add(
-             UserCard(name:userTemp['name'] as String,userName:userTemp['userName'] as String,imgUrl: userTemp['img'] as String)
-         );
-       }
-    }) ;
-    emit(NameSearchingState());
 
+// var late allResults;
+  List<UserCard> usersCards = [];
+  TextEditingController searchController = TextEditingController();
+  String searchedName = '';
+
+  Future<void> searching(String v) async {
+    usersCards = [];
+    searchedName = v;
+    var data = await FirebaseFirestore.instance
+        .collection('users')
+        .orderBy('name')
+        .get();
+    data.docs.forEach((element) {
+      var userTemp = element.data();
+      if (userTemp['name'].toString().startsWith(searchedName)) {
+        usersCards.add(UserCard(
+            name: userTemp['name'] as String,
+            userName: userTemp['userName'] as String,
+            imgUrl: userTemp['img'] as String));
+      }
+    });
+    emit(NameSearchingState());
   }
 
+  final storageRef = FirebaseStorage.instance.ref();
 }

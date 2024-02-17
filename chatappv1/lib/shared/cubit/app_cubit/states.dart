@@ -63,3 +63,9 @@ class CoverUpdateErrorState extends AppStates {
 
 class EditingBioChangeTextField extends AppStates{}
 class NameSearchingState extends AppStates{}
+class UploadProfileImageOnStoreLoading extends AppStates{}
+class UploadProfileImageOnStoreSuccess extends AppStates{}
+class UploadProfileImageOnStoreError extends AppStates{}
+class UploadCoverImageOnStoreLoading extends AppStates{}
+class UploadCoverImageOnStoreSuccess extends AppStates{}
+class UploadCoverImageOnStoreError extends AppStates{}

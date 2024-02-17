@@ -61,17 +61,28 @@ class RegisterCubit extends Cubit<RegisterStates> {
   var Controller = TextEditingController();
   var formRegisterKey2 = GlobalKey<FormState>();
 
-  bool isUserNameTaken(String username) {
-    FirebaseFirestore.instance
+  bool result=false;
+  Future<bool> isUserNameTaken(String username)  async {
+    bool isTaken=false;
+    var y;
+    int count=0;
+    emit(CheckingUNameLoading());
+    await FirebaseFirestore.instance
         .collection('users')
         .where('userName', isEqualTo: username)
         .get()
         .then((x) {
+          count=x.size;
       if (x.size > 0) {
-        return true;
+
+        print(x.size);
+        isTaken=true;
+        y=x;
       }
     });
-    return false;
+    print(count);
+    emit(CheckingUserNameState());
+    return (count>0)?true:false;
   }
 
   late String userEmail;
@@ -120,6 +131,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
     }
   }
 
+  //3ndna mshakllll fl register imgss
   Future<void> userRegisterUserName() async {
     emit(RegisterLoadingState());
     try {

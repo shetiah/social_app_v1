@@ -17,7 +17,8 @@ class RegisterErrorState extends RegisterStates {
 
 class UserCreationFinishedState extends RegisterStates {}
 class UserCreationLoadingState extends RegisterStates {}
-class TakeUserNameState extends RegisterStates {}
+class CheckingUserNameState extends RegisterStates {}
+class CheckingUNameLoading extends RegisterStates {}
 class ProfileImagePickedSuccessState extends RegisterStates {}
 class ProfileImagePickedErrorState extends RegisterStates {}
 class ProfileImagePickedLoadingState extends RegisterStates {}

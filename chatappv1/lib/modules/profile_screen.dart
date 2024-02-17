@@ -27,27 +27,19 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          if (userModel.coverImg == 'none')
-                            SizedBox(
+                          SizedBox(
+                            width: double.infinity,
+                            child: Image(
+                              image: CachedNetworkImageProvider((userModel
+                                          .coverImg ==
+                                      'none')
+                                  ? 'https://img.freepik.com/free-photo/portrait-charming-brunet-men-white-tshirts-jeans-isolated-man-orange-jacket-show-thump-up-guy-checkered-shirt-show-peace-sign_197531-29589.jpg?w=1800&t=st=1707842534~exp=1707843134~hmac=eed91cb9cc45b18a19649e6468e0d6d768d9d4f07fff23febd39e042bddd974c'
+                                  : userModel.coverImg),
+                              fit: BoxFit.cover,
+                              height: cubit.getScreenHeight(context) * .32,
                               width: double.infinity,
-                              child: Image(
-                                image: const CachedNetworkImageProvider(
-                                    'https://img.freepik.com/free-photo/portrait-charming-brunet-men-white-tshirts-jeans-isolated-man-orange-jacket-show-thump-up-guy-checkered-shirt-show-peace-sign_197531-29589.jpg?w=1800&t=st=1707842534~exp=1707843134~hmac=eed91cb9cc45b18a19649e6468e0d6d768d9d4f07fff23febd39e042bddd974c'),
-                                fit: BoxFit.cover,
-                                height: cubit.getScreenHeight(context) * .32,
-                                width: double.infinity,
-                              ),
-                            )
-                          else
-                            SizedBox(
-                              width: double.infinity,
-                              child: Image(
-                                image: FileImage(File(userModel.coverImg)),
-                                fit: BoxFit.cover,
-                                height: cubit.getScreenHeight(context) * .32,
-                                width: double.infinity,
-                              ),
                             ),
+                          ),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -134,7 +126,10 @@ class ProfileScreen extends StatelessWidget {
                                             cubit.getScreenWidth(context) * .06,
                                       ),
                                       Padding(
-                                        padding:  EdgeInsets.symmetric(horizontal: cubit.getScreenWidth(context)*.01),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                cubit.getScreenWidth(context) *
+                                                    .01),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -146,11 +141,12 @@ class ProfileScreen extends StatelessWidget {
                                                         // padding:EdgeInsets.symmetric(horizontal: 0),
                                                         child: TextFormField(
                                                           maxLines: null,
-                                                          focusNode:cubit.bioTextFieldFocus,
-
+                                                          focusNode: cubit
+                                                              .bioTextFieldFocus,
                                                           controller: cubit
                                                               .bioEditingController,
-                                                          style: Theme.of(context)
+                                                          style: Theme.of(
+                                                                  context)
                                                               .textTheme
                                                               .bodyLarge!
                                                               .copyWith(
@@ -166,24 +162,21 @@ class ProfileScreen extends StatelessWidget {
                                                                       .getScreenWidth(
                                                                           context) *
                                                                   .08,
-                                                              width: cubit
-                                                                      .getScreenWidth(
-                                                                          context) *
+                                                              width: cubit.getScreenWidth(
+                                                                      context) *
                                                                   .08,
                                                               child: IconButton
                                                                   .filled(
-                                                                      padding:
-                                                                          const EdgeInsets
-                                                                              .all(
-                                                                              0),
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          0),
                                                                       iconSize:
                                                                           cubit.getScreenWidth(context) *
                                                                               .05,
                                                                       onPressed:
                                                                           () {
                                                                         cubit.editBio(
-                                                                            userModel
-                                                                                .bio);
+                                                                            userModel.bio);
                                                                       },
                                                                       icon: cubit
                                                                           .editingBioIcon),
@@ -199,55 +192,58 @@ class ProfileScreen extends StatelessWidget {
                                                                 .textTheme
                                                                 .bodyLarge!
                                                                 .copyWith(
-                                                                    fontSize: 18,
+                                                                    fontSize:
+                                                                        18,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600),
                                                           )
                                                         : Expanded(
-                                                          child: Text(
+                                                            child: Text(
                                                               userModel.bio,
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme
                                                                   .bodyLarge!
                                                                   .copyWith(
-                                                                      fontSize: 18,
+                                                                      fontSize:
+                                                                          18,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600),
                                                             ),
-                                                        ),
+                                                          ),
                                                 // if (!cubit.editingBio) Spacer(),
                                                 if (!cubit.editingBio)
                                                   SizedBox(
-                                                    height: cubit.getScreenWidth(
-                                                            context) *
-                                                        .08,
+                                                    height:
+                                                        cubit.getScreenWidth(
+                                                                context) *
+                                                            .08,
                                                     width: cubit.getScreenWidth(
                                                             context) *
                                                         .08,
                                                     child: IconButton.filled(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                0),
-                                                        iconSize:
-                                                            cubit.getScreenWidth(
+                                                            const EdgeInsets
+                                                                .all(0),
+                                                        iconSize: cubit
+                                                                .getScreenWidth(
                                                                     context) *
-                                                                .05,
+                                                            .05,
                                                         onPressed: () {
                                                           cubit.editBio(
                                                               userModel.bio);
                                                         },
-                                                        icon:
-                                                            cubit.editingBioIcon),
+                                                        icon: cubit
+                                                            .editingBioIcon),
                                                   )
                                               ],
                                             ),
                                             if (!cubit.editingBio)
                                               SizedBox(
-                                                height: cubit
-                                                        .getScreenWidth(context) *
+                                                height: cubit.getScreenWidth(
+                                                        context) *
                                                     .03,
                                               ),
                                             if (!cubit.editingBio)
@@ -257,9 +253,9 @@ class ProfileScreen extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             SizedBox(
-                                              height:
-                                                  cubit.getScreenWidth(context) *
-                                                      .03,
+                                              height: cubit
+                                                      .getScreenWidth(context) *
+                                                  .03,
                                             ),
                                             Text(
                                               'My Posts',
@@ -272,9 +268,9 @@ class ProfileScreen extends StatelessWidget {
                                                           FontWeight.w600),
                                             ),
                                             SizedBox(
-                                              height:
-                                                  cubit.getScreenWidth(context) *
-                                                      .03,
+                                              height: cubit
+                                                      .getScreenWidth(context) *
+                                                  .03,
                                             ),
                                             Card(
                                               color: Colors.blueAccent
@@ -311,9 +307,10 @@ class ProfileScreen extends StatelessWidget {
                                                               'https://img.freepik.com/free-photo/portrait-serious-young-businessman-glasses_1262-3810.jpg?w=1800&t=st=1707831312~exp=1707831912~hmac=ca308542d839cd7364cb0739c3f9fe58f26ac5b16baee0b62ef11205fb487020'),
                                                     ),
                                                     SizedBox(
-                                                      width: cubit.getScreenWidth(
-                                                              context) *
-                                                          .02,
+                                                      width:
+                                                          cubit.getScreenWidth(
+                                                                  context) *
+                                                              .02,
                                                     ),
                                                     const Text(
                                                       "What's on your mind ?",
@@ -331,9 +328,9 @@ class ProfileScreen extends StatelessWidget {
                                               ),
                                             ),
                                             SizedBox(
-                                              height:
-                                                  cubit.getScreenWidth(context) *
-                                                      .04,
+                                              height: cubit
+                                                      .getScreenWidth(context) *
+                                                  .04,
                                             ),
                                           ],
                                         ),
@@ -350,94 +347,53 @@ class ProfileScreen extends StatelessWidget {
                             child: CircleAvatar(
                                 radius: cubit.getScreenWidth(context) * .127,
                                 backgroundColor: Colors.blueAccent,
-                                child: userModel.img == 'none'
-                                    ? Stack(
-                                        alignment: Alignment.bottomRight,
-                                        children: [
-                                            CircleAvatar(
-                                              backgroundImage:
-                                                  const CachedNetworkImageProvider(
-                                                      'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'),
-                                              radius: cubit
-                                                      .getScreenWidth(context) *
-                                                  .12,
-                                            ),
-                                            SizedBox(
-                                              height: cubit
-                                                      .getScreenWidth(context) *
-                                                  .08,
-                                              width: cubit
-                                                      .getScreenWidth(context) *
-                                                  .08,
-                                              child: IconButton.filled(
-                                                  color: Colors.white,
-                                                  padding:
-                                                      const EdgeInsets.all(0),
-                                                  iconSize:
-                                                      cubit.getScreenWidth(
-                                                              context) *
-                                                          .05,
-                                                  onPressed: () {
-                                                    cubit.editProfilePhoto();
-                                                  },
-                                                  icon: const Icon(Icons.edit)),
-                                            )
-                                          ])
-                                    : Stack(
-                                        alignment: Alignment.bottomRight,
-                                        children: [
-                                            CircleAvatar(
-                                              backgroundImage: FileImage(
-                                                  File(userModel.img)),
-                                              radius: cubit
-                                                      .getScreenWidth(context) *
-                                                  .12,
-                                            ),
-                                            SizedBox(
-                                              height: cubit
-                                                      .getScreenWidth(context) *
-                                                  .08,
-                                              width: cubit
-                                                      .getScreenWidth(context) *
-                                                  .08,
-                                              child: IconButton.filled(
-                                                  color: Colors.white,
-                                                  padding:
-                                                      const EdgeInsets.all(0),
-                                                  iconSize:
-                                                      cubit.getScreenWidth(
-                                                              context) *
-                                                          .05,
-                                                  onPressed: () {
-                                                    cubit.editProfilePhoto();
-                                                  },
-                                                  icon: const Icon(Icons.edit)),
-                                            )
-                                          ])),
+                                child: Stack(
+                                    alignment: Alignment.bottomRight,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                            CachedNetworkImageProvider((userModel
+                                                        .img ==
+                                                    'none')
+                                                ? 'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'
+                                                : userModel.img),
+                                        radius:
+                                            cubit.getScreenWidth(context) * .12,
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            cubit.getScreenWidth(context) * .08,
+                                        width:
+                                            cubit.getScreenWidth(context) * .08,
+                                        child: IconButton.filled(
+                                            color: Colors.white,
+                                            padding: const EdgeInsets.all(0),
+                                            iconSize:
+                                                cubit.getScreenWidth(context) *
+                                                    .05,
+                                            onPressed: () {
+                                              cubit.editProfilePhoto();
+                                            },
+                                            icon: const Icon(Icons.edit)),
+                                      )
+                                    ])),
                           ),
                           Positioned(
                               top: cubit.getScreenWidth(context) * .55,
                               right: cubit.getScreenWidth(context) * .006,
-                              child: Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    SizedBox(
-                                      height:
-                                          cubit.getScreenWidth(context) * .08,
-                                      width:
-                                          cubit.getScreenWidth(context) * .08,
-                                      child: IconButton.filled(
-                                          color: Colors.white,
-                                          padding: const EdgeInsets.all(0),
-                                          iconSize:
-                                              cubit.getScreenWidth(context) *
-                                                  .05,
-                                          onPressed: () {
-                                            cubit.editCoverPhoto();
-                                          },
-                                          icon: const Icon(Icons.edit)),
-                                    )
-                                  ])),
+                              child: SizedBox(
+                                height: cubit.getScreenWidth(context) * .08,
+                                width: cubit.getScreenWidth(context) * .08,
+                                child: IconButton.filled(
+                                    color: Colors.white,
+                                    padding: const EdgeInsets.all(0),
+                                    iconSize:
+                                        cubit.getScreenWidth(context) * .05,
+                                    onPressed: () {
+                                      cubit.editCoverPhoto();
+                                    },
+                                    icon: const Icon(Icons.edit)),
+                              )),
                         ],
                       )
                     ],
