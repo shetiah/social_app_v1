@@ -17,4 +17,4 @@ Widget ?startScreen;
 
 late UserModel userModel;
 final storageRef = FirebaseStorage.instance.ref();
-final Color defaultColor= const Color.fromARGB(200, 43, 49, 162).withOpacity(0.8);
+final Color defaultColor= const Color.fromARGB(200, 43, 49, 162) .withOpacity(0.8);

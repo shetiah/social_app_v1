@@ -129,6 +129,8 @@ class AppCubit extends Cubit<AppStates> {
 
   late File coverImagePath;
 
+
+
   Future<void> editCoverPhoto() async {
     emit(CoverEditLoadingState());
     try {
@@ -243,7 +245,9 @@ class AppCubit extends Cubit<AppStates> {
           userModel = UserModel.fromJson(value.data());
           // userModel.followingList.addAll({});
           getMyFollowingList().then((value) {
-            emit(GetUserSuccessState());
+            getMyFollowersList().then((value) {
+              emit(GetUserSuccessState());
+            });
           });
         }
         emit(GetUserSuccessState());
@@ -254,32 +258,128 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
+  // UserModel initAnyUserData() {
+  //   emit(GetUserLoadingState());
+  //   UserModel model;
+  //   try {
+  //     FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(uId)
+  //         .get()
+  //         .then((value) {
+  //       if (value.data() == null) {
+  //         print('value.data() == null');
+  //         CacheHelper.saveData(key: "uId", value: "");
+  //         uId = "";
+  //       } else {
+  //         // CacheHelper.saveData(key: "uId", value: "");
+  //         // uId = ;
+  //         print(uId);
+  //         model = UserModel.fromJson(value.data());
+  //         // userModel.followingList.addAll({});
+  //         getMyFollowingList().then((value) {
+  //           getMyFollowersList().then((value) {
+  //             emit(GetUserSuccessState());
+  //           });
+  //         });
+  //       }
+  //       emit(GetUserSuccessState());
+  //     });
+  //   } catch (error) {
+  //     print(error.toString());
+  //     emit(GetUserErrorState(error.toString()));
+  //   }
+  // }
+
   Future<void> getMyFollowingList() async {
     emit(GetMyFollowingListLoadingState());
     userModel.followingList = {};
-    var usersCollection =  FirebaseFirestore.instance.collection('users');
+    var usersCollection = FirebaseFirestore.instance.collection('users');
     var userDoc = await usersCollection.doc(userModel.uId).get();
     var data = userDoc.data();
-    print( data?['following-list'].runtimeType);
+    print(data?['following-list'].runtimeType);
     print(data?['following-list']);
     // print( data?['following-list'].);
     List<dynamic> tempList = data?['following-list'];
     for (var uId in tempList) {
       print('xxxxxxxxxxxxxxx');
-     UserModel tempUser =await getAnyUser(uId);
-      userModel.followingList.addAll({
-        uId:tempUser
-      });
+      UserModel tempUser = await getAnyUser(uId);
+      userModel.followingList.addAll({uId: tempUser});
     }
     print(userModel.followingList.length);
     emit(GetMyFollowingListSuccessState());
   }
 
-  Future<UserModel> getAnyUser(String uid) async {
-    var usersCollection =  FirebaseFirestore.instance.collection('users');
+  Future<void> getMyFollowersList() async {
+    emit(GetMyFollowingListLoadingState());
+    userModel.followersList = {};
+    var usersCollection = FirebaseFirestore.instance.collection('users');
     var userDoc = await usersCollection.doc(userModel.uId).get();
+    var data = userDoc.data();
+    print(data?['followers-list'].runtimeType);
+    print(data?['followers-list']);
+    // print( data?['following-list'].);
+    List<dynamic> tempList = data?['followers-list'];
+    for (var uId in tempList) {
+      print('xxxxxxxxxxxxxxx');
+      UserModel tempUser = await getAnyUser(uId);
+      userModel.followersList.addAll({uId: tempUser});
+    }
+    print(userModel.followersList.length);
+    emit(GetMyFollowingListSuccessState());
+  }
 
-    return UserModel.fromJson(userDoc.data());
+  Future<UserModel> getAnyUser(String uid) async {
+    var usersCollection = FirebaseFirestore.instance.collection('users');
+    var userDoc = await usersCollection.doc(uid).get();
+    var data = userDoc.data();
+    UserModel model = UserModel.fromJson(data);
+
+    // model.followersList = {};
+    // List<dynamic> tempList = data?['followers-list'];
+    // for (var uId in tempList) {
+    //   UserModel tempUser = await getAnyUser(uId);
+    //   model.followersList.addAll({uId: tempUser});
+    // }
+    //
+    // model.followingList = {};
+    // tempList = data?['following-list'];
+    // for (var uId in tempList) {
+    //   UserModel tempUser = await getAnyUser(uId);
+    //   model.followingList.addAll({uId: tempUser});
+    // }
+    return model;
+  }
+  UserModel initUserLists({required UserModel model}) {
+    // model = UserModel.fromJson(userTemp);
+    emit(GetAnyUserListsLoadingState());
+    model.followersList = {};
+    var usersCollection = FirebaseFirestore.instance.collection('users');
+    var userDoc;
+    // userDoc=
+    usersCollection.doc(model.uId).get().then((value) {
+      userDoc = value;
+      var data = userDoc.data();
+      List<dynamic> tempList = data?['followers-list'];
+      for (var uId in tempList) {
+        UserModel tempUser;
+        getAnyUser(uId).then((value) {
+          tempUser = value;
+          model.followersList.addAll({uId: tempUser});
+        });
+      }
+      model.followingList = {};
+      tempList = data?['following-list'];
+      for (var uId in tempList) {
+        UserModel tempUser;
+        getAnyUser(uId).then((value) {
+          tempUser = value;
+          model.followingList.addAll({uId: tempUser});
+        });
+      }
+      emit(GetAnyUserListsSuccessState());
+    });
+    return model;
   }
 
 // var late allResults;
@@ -287,25 +387,48 @@ class AppCubit extends Cubit<AppStates> {
   TextEditingController searchController = TextEditingController();
   String searchedName = '';
 
-  Future<void> searching() async {
+  Future<void> searching(String searched) async {
+    // if()
     usersCards = [];
+
     emit(NameSearchingLoadingState());
+
+    // if( searchController.text=='')
     // usersCards = [];
-    // if(searchController.text.isEmpty) {
-    //   emit(NameSearchingState());
-    //   return;
-    // }
+    if (searched.isEmpty) {
+      emit(NameSearchingState());
+      return;
+    }
+
+
     // emit(NameSearchingLoadingState());
-    searchedName = searchController.text;
+    searchedName = searched;
     var data = await FirebaseFirestore.instance
         .collection('users')
         .orderBy('name')
         .get();
     for (var element in data.docs) {
       var userTemp = element.data();
-      if (userTemp['name'].toString().startsWith(searchController.text)) {
+      if (userTemp['name'].toString().startsWith(searched)) {
         UserModel model = UserModel.fromJson(userTemp);
         var temp = UserCard(model: model);
+
+        model.followersList = {};
+        var usersCollection = FirebaseFirestore.instance.collection('users');
+        var userDoc = await usersCollection.doc(model.uId).get();
+        var data = userDoc.data();
+        List<dynamic> tempList = data?['followers-list'];
+        for (var uId in tempList) {
+          UserModel tempUser = await getAnyUser(uId);
+          model.followersList.addAll({uId: tempUser});
+        }
+
+        model.followingList = {};
+        tempList = data?['following-list'];
+        for (var uId in tempList) {
+          UserModel tempUser = await getAnyUser(uId);
+          model.followingList.addAll({uId: tempUser});
+        }
 
         if (usersCards.contains(temp)) {
           continue;
@@ -320,12 +443,15 @@ class AppCubit extends Cubit<AppStates> {
   Future<void> followUser(UserModel followingUser) async {
     emit(FollowingSomebodyLoadingState());
     userModel.followingList.addAll({followingUser.uId: followingUser});
-   print(followingUser.uId);
-   print( userModel.followingList.keys.toList());
     var usersCollection = FirebaseFirestore.instance.collection('users');
-    var userDoc = usersCollection.doc(uId);
-   await userDoc
-        .update({'following-list':  userModel.followingList.keys.toList()});
+    var currentUserDoc = usersCollection.doc(uId);
+    await currentUserDoc
+        .update({'following-list': userModel.followingList.keys.toList()});
+
+    followingUser.followersList.addAll({userModel.uId: userModel});
+    var followedUserDoc = usersCollection.doc(followingUser.uId);
+    await followedUserDoc
+        .update({'followers-list': followingUser.followersList.keys.toList()});
 
     getMyFollowingList().then((value) {
       emit(FollowingSomebodySuccessState());
@@ -334,17 +460,19 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<void> unfollowUser(UserModel followingUser) async {
     emit(FollowingSomebodyLoadingState());
-    userModel.followingList.addAll({followingUser.uId: followingUser});
+    userModel.followingList.remove(followingUser.uId);
     var usersCollection = FirebaseFirestore.instance.collection('users');
-    var userDoc = usersCollection.doc(followingUser.uId);
-   await userDoc
-        .update({'following-list': followingUser.followingList.keys.toList()});
-    // var friendsCollection=userDoc.collection('friendsList');
-    // friendsDoc.add({
-    //   'followingUserId':followingUserId.uId
-    // });
-    // getMyFollowingList().then((value) {
+    var userDoc = usersCollection.doc(uId);
+    await userDoc
+        .update({'following-list': userModel.followingList.keys.toList()});
+
+    followingUser.followersList.remove(userModel.uId);
+    var followedUserDoc = usersCollection.doc(followingUser.uId);
+    await followedUserDoc
+        .update({'followers-list': followingUser.followersList.keys.toList()});
+
+    getMyFollowingList().then((value) async {
       emit(FollowingSomebodySuccessState());
-    // });
+    });
   }
 }

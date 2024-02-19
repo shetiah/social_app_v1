@@ -6,22 +6,26 @@ import 'package:chatappv1/shared/components/constants/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../shared/components/components/my_main_components.dart';
 import '../shared/cubit/app_cubit/cubit.dart';
 import '../shared/cubit/app_cubit/states.dart';
 
 class OtherUser extends StatelessWidget {
-  const OtherUser({super.key, required this.model});
+   OtherUser({super.key, required this.model});
 
-  final UserModel model;
+   UserModel model;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => AppCubit(),
       child: BlocConsumer<AppCubit, AppStates>(
-        listener: (BuildContext context, AppStates state) {},
+        listener: (BuildContext context, AppStates state) {
+          // if(state is )
+        },
         builder: (BuildContext context, AppStates state) {
           var cubit = AppCubit.get(context);
+          // model=cubit.initUserLists(model: model);
           return Scaffold(
             appBar: AppBar(),
             body: Column(
@@ -69,53 +73,79 @@ class OtherUser extends StatelessWidget {
                                               cubit.getScreenWidth(context) *
                                                   .03,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Column(
                                           children: [
-                                          const  Column(
-                                              children: [
-                                                 Text(
-                                                  "111",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                  ),
-                                                ),
-                                                 Text(
-                                                  "Friends",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
+                                            Text(
+                                              model.followersList.length
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
                                             ),
-                                            SizedBox(
-                                              width: cubit
-                                                      .getScreenWidth(context) *
-                                                  .04,
+                                            Text(
+                                              "Followers",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
                                             ),
-                                            const Column(
-                                              children: [
-                                                Text(
-                                                  "378",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Posts",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
                                           ],
                                         ),
+                                        SizedBox(
+                                          width: cubit
+                                              .getScreenWidth(context) *
+                                              .04,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              model.followingList.length
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Following",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: cubit
+                                              .getScreenWidth(context) *
+                                              .04,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              model.myPosts.length
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            const Text(
+                                              "Posts",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                         if(userModel.userName!=model.userName)
                                         SizedBox(
                                           height:
@@ -130,11 +160,11 @@ class OtherUser extends StatelessWidget {
                                             cubit.unfollowUser(model);
                                           },
                                           child: Container(
-                                              decoration: const BoxDecoration(
+                                              decoration:  BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(40)),
-                                                  color: Colors.blueAccent),
+                                                  color: defaultColor),
                                               child: Padding(
                                                 padding: EdgeInsets.all(
                                                     cubit.getScreenWidth(
@@ -169,11 +199,11 @@ class OtherUser extends StatelessWidget {
                                             // userModel.friendsList.addAll({model.uId:model});
                                           },
                                           child: Container(
-                                              decoration: const BoxDecoration(
+                                              decoration:  BoxDecoration(
                                                   borderRadius:
                                                   BorderRadius.all(
                                                       Radius.circular(40)),
-                                                  color: Colors.blueAccent),
+                                                  color: defaultColor),
                                               child: Padding(
                                                 padding: EdgeInsets.all(
                                                     cubit.getScreenWidth(
@@ -262,78 +292,256 @@ class OtherUser extends StatelessWidget {
                                                     .03,
                                               ),
                                               Text(
-                                                'My Posts',
+                                                'Following',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyLarge!
                                                     .copyWith(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                              ),
-                                              SizedBox(
-                                                height: cubit.getScreenWidth(
-                                                        context) *
-                                                    .03,
-                                              ),
-                                              Card(
-                                                color: Colors.blueAccent
-                                                    .withOpacity(0.5),
-                                                clipBehavior:
-                                                    Clip.antiAliasWithSaveLayer,
-                                                elevation: 5.0,
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: cubit.getScreenWidth(
-                                                            context) *
-                                                        .01,
-                                                    right: cubit.getScreenWidth(
-                                                            context) *
-                                                        .03,
-                                                    top: cubit.getScreenWidth(
-                                                            context) *
-                                                        .03,
-                                                    bottom:
-                                                        cubit.getScreenWidth(
-                                                                context) *
-                                                            .03,
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: cubit
-                                                                .getScreenWidth(
-                                                                    context) *
-                                                            .08,
-                                                        backgroundColor:
-                                                            Colors.blue,
-                                                        backgroundImage:
-                                                            const CachedNetworkImageProvider(
-                                                                'https://img.freepik.com/free-photo/portrait-serious-young-businessman-glasses_1262-3810.jpg?w=1800&t=st=1707831312~exp=1707831912~hmac=ca308542d839cd7364cb0739c3f9fe58f26ac5b16baee0b62ef11205fb487020'),
-                                                      ),
-                                                      SizedBox(
-                                                        width: cubit
-                                                                .getScreenWidth(
-                                                                    context) *
-                                                            .02,
-                                                      ),
-                                                      const Text(
-                                                        "What's on your mind ?",
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                    FontWeight.w600),
                                               ),
                                               SizedBox(
                                                 height: cubit.getScreenWidth(
                                                         context) *
                                                     .04,
+                                              ),
+                                              SizedBox(
+                                                height: cubit.getScreenWidth(
+                                                    context) *
+                                                    .4,
+                                                child: ListView.separated(
+                                                  scrollDirection:
+                                                  Axis.horizontal,
+                                                  // shrinkWrap:true,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return InkWell(
+                                                      onTap: (){
+                                                        navigateTo(context, OtherUser(model: model
+                                                            .followingList
+                                                            .values
+                                                            .elementAt(
+                                                            index)));
+                                                      },
+                                                      child: SizedBox(
+                                                        width:
+                                                        cubit.getScreenWidth(
+                                                            context) *
+                                                            .25,
+                                                        child: Column(
+                                                          children: [
+                                                            CircleAvatar(
+                                                                radius: MediaQuery.of(
+                                                                    context)
+                                                                    .size
+                                                                    .width *
+                                                                    .1,
+                                                                backgroundColor:
+                                                                Colors.white,
+                                                                child:
+                                                                CircleAvatar(
+                                                                  backgroundImage: CachedNetworkImageProvider((model
+                                                                      .followingList
+                                                                      .values
+                                                                      .elementAt(
+                                                                      index)
+                                                                      .img ==
+                                                                      'none')
+                                                                      ? 'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'
+                                                                      : model
+                                                                      .followingList
+                                                                      .values
+                                                                      .elementAt(
+                                                                      index)
+                                                                      .img),
+                                                                  radius: MediaQuery.of(
+                                                                      context)
+                                                                      .size
+                                                                      .width *
+                                                                      .08,
+                                                                )),
+                                                            SizedBox(
+                                                              height: cubit
+                                                                  .getScreenWidth(
+                                                                  context) *
+                                                                  .01,
+                                                            ),
+                                                            Text(
+                                                                model
+                                                                    .followingList
+                                                                    .values
+                                                                    .elementAt(
+                                                                    index)
+                                                                    .name,
+                                                                style: const TextStyle(
+                                                                    fontSize: 15,
+                                                                    overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
+                                                            SizedBox(
+                                                              height: cubit
+                                                                  .getScreenWidth(
+                                                                  context) *
+                                                                  .01,
+                                                            ),
+                                                            Text(
+                                                                model
+                                                                    .followingList
+                                                                    .values
+                                                                    .elementAt(
+                                                                    index)
+                                                                    .userName,
+                                                                style: TextStyle(
+                                                                    overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                    color: Colors
+                                                                        .grey[
+                                                                    600])),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  itemCount: model
+                                                      .followingList.length,
+                                                  separatorBuilder:
+                                                      (BuildContext context,
+                                                      int index) {
+                                                    return SizedBox(
+                                                      width: 10,
+                                                    );
+                                                  },
+                                                  // scrollDirection: Axis.horizontal,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                height: 1,
+                                                color: Colors.grey,
+                                              ),
+                                              SizedBox(
+                                                height: cubit.getScreenWidth(
+                                                    context) *
+                                                    .03,
+                                              ),
+                                              Text(
+                                                'Followers',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge!
+                                                    .copyWith(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                    FontWeight.w600),
+                                              ),
+                                              SizedBox(
+                                                height: cubit.getScreenWidth(
+                                                    context) *
+                                                    .03,
+                                              ),
+                                              SizedBox(
+                                                height: cubit.getScreenWidth(
+                                                    context) *
+                                                    .4,
+                                                child: ListView.separated(
+                                                  scrollDirection:
+                                                  Axis.horizontal,
+                                                  // shrinkWrap:true,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return InkWell(
+                                                      onTap: (){
+                                                        navigateTo(context, OtherUser(model: model
+                                                            .followersList
+                                                            .values
+                                                            .elementAt(
+                                                            index)));
+                                                      },
+                                                      child: SizedBox(
+                                                        width:
+                                                        cubit.getScreenWidth(
+                                                            context) *
+                                                            .25,
+                                                        child: Column(
+                                                          children: [
+                                                            CircleAvatar(
+                                                                radius: MediaQuery.of(
+                                                                    context)
+                                                                    .size
+                                                                    .width *
+                                                                    .1,
+                                                                backgroundColor:
+                                                                Colors.white,
+                                                                child:
+                                                                CircleAvatar(
+                                                                  backgroundImage: CachedNetworkImageProvider((model.followersList.values.elementAt(index)
+                                                                      .img ==
+                                                                      'none')
+                                                                      ? 'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'
+                                                                      : model.followersList.values.elementAt(index)
+                                                                      .img),
+                                                                  radius: MediaQuery.of(
+                                                                      context)
+                                                                      .size
+                                                                      .width *
+                                                                      .08,
+                                                                )),
+                                                            SizedBox(
+                                                              height: cubit
+                                                                  .getScreenWidth(
+                                                                  context) *
+                                                                  .01,
+                                                            ),
+                                                            Text(
+                                                                model.followersList.values.elementAt(index).name,
+                                                                style:const  TextStyle(
+                                                                    fontSize: 15,
+                                                                    overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
+                                                            SizedBox(
+                                                              height: cubit
+                                                                  .getScreenWidth(
+                                                                  context) *
+                                                                  .01,
+                                                            ),
+                                                            Text( model.followersList.values.elementAt(index).userName,
+                                                                style: TextStyle(
+                                                                    overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                    color: Colors
+                                                                        .grey[
+                                                                    600])),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  itemCount: model.followersList.length,
+                                                  separatorBuilder:
+                                                      (BuildContext context,
+                                                      int index) {
+                                                    return SizedBox(
+                                                      width: 10,
+                                                    );
+                                                  },
+                                                  // scrollDirection: Axis.horizontal,
+                                                ),
                                               ),
                                             ],
                                           ),

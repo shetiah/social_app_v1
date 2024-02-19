@@ -1,6 +1,5 @@
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../shared/cubit/app_cubit/cubit.dart';
@@ -30,7 +29,7 @@ class UsersScreen extends StatelessWidget {
                   },
                   onChange: (v) async {
                     // cubit.usersCards=[];
-                    await cubit.searching();
+                    await cubit.searching(v);
                     return v;
                   },
                   onTap: () {},

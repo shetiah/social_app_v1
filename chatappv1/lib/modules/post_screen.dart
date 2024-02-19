@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatappv1/shared/components/constants/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,26 +29,27 @@ class PostScreen extends StatelessWidget {
                       cubit.changeIndex(0, context);
                     },
                     child: CircleAvatar(
-                        backgroundColor: Colors.blue[200],
+                        backgroundColor:defaultColor,
                         child: Icon(
                           Icons.close,
+                          color: Colors.white,
                           size: cubit.getScreenWidth(context) * .08,
                         )),
                   ),
                 ),
-                title: Text('Create Post'),
+                title: const Text('Create Post'),
                 actions: [
                   Container(
-                    decoration: BoxDecoration(
+                    decoration:  BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.blue[200],
+                      color:defaultColor,
                     ),
                     child: TextButton(
                       onPressed: () {},
                       child: const Text(
                         'POST',
                         style: TextStyle(
-                            color: Color.fromRGBO(11, 11, 59, 1),
+                            color:Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -143,7 +145,7 @@ class PostScreen extends StatelessWidget {
                                     : cubit.getScreenHeight(context) * .2,
                                 width: double.infinity,
                                 decoration: const BoxDecoration(
-                                  color: Colors.grey,
+                                  color: Color.fromARGB(200, 43, 49, 162) ,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20)),
                                 ),

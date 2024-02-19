@@ -77,3 +77,5 @@ class UnFollowingSomebodyLoadingState extends AppStates{}
 class RemovedFriendState extends AppStates{}
 class GetMyFollowingListSuccessState extends AppStates{}
 class GetMyFollowingListLoadingState extends AppStates{}
+class GetAnyUserListsLoadingState extends AppStates{}
+class GetAnyUserListsSuccessState extends AppStates{}
