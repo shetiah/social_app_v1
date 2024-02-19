@@ -11,15 +11,14 @@ import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
 import 'package:chatappv1/shared/network/local/cacheHelper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../modules/chats.dart';
 import '../../../modules/login_screen.dart';
+import '../../../Widgets/user_card.dart';
 import '../../components/components/my_main_components.dart';
-import '../../components/myWidgets/user_card.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super((InitState()));
@@ -83,7 +82,7 @@ class AppCubit extends Cubit<AppStates> {
       if (image != null) {
         profileImageFile = File(image.path);
         print(image.path);
-       await updateProfileImageFireStorage();
+        await updateProfileImageFireStorage();
         emit(ProfileEditSuccessState());
       } else {
         print('No image selected.');
@@ -112,7 +111,7 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<void> updateProfileImageFireStorage() async {
     emit(UploadProfileImageOnStoreLoading());
-   await storageRef
+    await storageRef
         .child(
             'users/images/${Uri.file(profileImageFile.path).pathSegments.last}')
         .putFile(profileImageFile)
@@ -233,12 +232,19 @@ class AppCubit extends Cubit<AppStates> {
           .doc(uId)
           .get()
           .then((value) {
-        print(uId);
         if (value.data() == null) {
+          print('value.data() == null');
           CacheHelper.saveData(key: "uId", value: "");
           uId = "";
         } else {
+          // CacheHelper.saveData(key: "uId", value: "");
+          // uId = ;
+          print(uId);
           userModel = UserModel.fromJson(value.data());
+          // userModel.followingList.addAll({});
+          getMyFollowingList().then((value) {
+            emit(GetUserSuccessState());
+          });
         }
         emit(GetUserSuccessState());
       });
@@ -248,29 +254,97 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
+  Future<void> getMyFollowingList() async {
+    emit(GetMyFollowingListLoadingState());
+    userModel.followingList = {};
+    var usersCollection =  FirebaseFirestore.instance.collection('users');
+    var userDoc = await usersCollection.doc(userModel.uId).get();
+    var data = userDoc.data();
+    print( data?['following-list'].runtimeType);
+    print(data?['following-list']);
+    // print( data?['following-list'].);
+    List<dynamic> tempList = data?['following-list'];
+    for (var uId in tempList) {
+      print('xxxxxxxxxxxxxxx');
+     UserModel tempUser =await getAnyUser(uId);
+      userModel.followingList.addAll({
+        uId:tempUser
+      });
+    }
+    print(userModel.followingList.length);
+    emit(GetMyFollowingListSuccessState());
+  }
+
+  Future<UserModel> getAnyUser(String uid) async {
+    var usersCollection =  FirebaseFirestore.instance.collection('users');
+    var userDoc = await usersCollection.doc(userModel.uId).get();
+
+    return UserModel.fromJson(userDoc.data());
+  }
+
 // var late allResults;
   List<UserCard> usersCards = [];
   TextEditingController searchController = TextEditingController();
   String searchedName = '';
 
-  Future<void> searching(String v) async {
+  Future<void> searching() async {
     usersCards = [];
-    searchedName = v;
+    emit(NameSearchingLoadingState());
+    // usersCards = [];
+    // if(searchController.text.isEmpty) {
+    //   emit(NameSearchingState());
+    //   return;
+    // }
+    // emit(NameSearchingLoadingState());
+    searchedName = searchController.text;
     var data = await FirebaseFirestore.instance
         .collection('users')
         .orderBy('name')
         .get();
-    data.docs.forEach((element) {
+    for (var element in data.docs) {
       var userTemp = element.data();
-      if (userTemp['name'].toString().startsWith(searchedName)) {
-        usersCards.add(UserCard(
-            name: userTemp['name'] as String,
-            userName: userTemp['userName'] as String,
-            imgUrl: userTemp['img'] as String));
+      if (userTemp['name'].toString().startsWith(searchController.text)) {
+        UserModel model = UserModel.fromJson(userTemp);
+        var temp = UserCard(model: model);
+
+        if (usersCards.contains(temp)) {
+          continue;
+        }
+        usersCards.add(temp);
       }
-    });
+    }
+
     emit(NameSearchingState());
   }
 
-  final storageRef = FirebaseStorage.instance.ref();
+  Future<void> followUser(UserModel followingUser) async {
+    emit(FollowingSomebodyLoadingState());
+    userModel.followingList.addAll({followingUser.uId: followingUser});
+   print(followingUser.uId);
+   print( userModel.followingList.keys.toList());
+    var usersCollection = FirebaseFirestore.instance.collection('users');
+    var userDoc = usersCollection.doc(uId);
+   await userDoc
+        .update({'following-list':  userModel.followingList.keys.toList()});
+
+    getMyFollowingList().then((value) {
+      emit(FollowingSomebodySuccessState());
+    });
+  }
+
+  Future<void> unfollowUser(UserModel followingUser) async {
+    emit(FollowingSomebodyLoadingState());
+    userModel.followingList.addAll({followingUser.uId: followingUser});
+    var usersCollection = FirebaseFirestore.instance.collection('users');
+    var userDoc = usersCollection.doc(followingUser.uId);
+   await userDoc
+        .update({'following-list': followingUser.followingList.keys.toList()});
+    // var friendsCollection=userDoc.collection('friendsList');
+    // friendsDoc.add({
+    //   'followingUserId':followingUserId.uId
+    // });
+    // getMyFollowingList().then((value) {
+      emit(FollowingSomebodySuccessState());
+    // });
+  }
 }

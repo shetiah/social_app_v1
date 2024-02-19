@@ -69,3 +69,11 @@ class UploadProfileImageOnStoreError extends AppStates{}
 class UploadCoverImageOnStoreLoading extends AppStates{}
 class UploadCoverImageOnStoreSuccess extends AppStates{}
 class UploadCoverImageOnStoreError extends AppStates{}
+class NameSearchingLoadingState extends AppStates{}
+class FollowingSomebodyLoadingState extends AppStates{}
+class FollowingSomebodySuccessState extends AppStates{}
+class UnFollowingSomebodySuccessState extends AppStates{}
+class UnFollowingSomebodyLoadingState extends AppStates{}
+class RemovedFriendState extends AppStates{}
+class GetMyFollowingListSuccessState extends AppStates{}
+class GetMyFollowingListLoadingState extends AppStates{}

@@ -1,7 +1,9 @@
 import 'package:chatappv1/modules/post_screen.dart';
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
+import 'package:chatappv1/shared/components/constants/const.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/cubit.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,27 +21,60 @@ class HomeScreen extends StatelessWidget {
 
           return Scaffold(
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(cubit.getScreenWidth(context)*.14),
+                preferredSize:
+                    Size.fromHeight(cubit.getScreenWidth(context) * .14),
                 child: AppBar(
                   title: RichText(
                     text: TextSpan(children: [
-                      TextSpan(text: 'Social', style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 18,
-                     fontWeight: FontWeight.bold,
-                        color: Colors.red
-                      )),
-                      TextSpan(text: 'App', style:Theme.of(context).textTheme.titleSmall?.copyWith(
-                       fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: const Color.fromARGB(200, 43, 49, 162)
-                      )),
-                    ]
-                    ),),
+                      TextSpan(
+                          text: 'Social',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red)),
+                      TextSpan(
+                          text: 'App',
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: defaultColor,
+                                  )),
+                    ]),
+                  ),
                   centerTitle: true,
                   actions: [
-                   defaultTextButton(function: (){
-                     cubit.signOut(context);
-                   }, text: 'LOG OUT')
+                    InkWell(
+                      onTap: (){
+                        cubit.signOut(context);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            right: cubit.getScreenWidth(context) * .01),
+                        child: Container(
+                          // clipBehavior: Clip.antiAliasWithSaveLayer,
+                          //   height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: defaultColor.withOpacity(0.8),
+                          ),
+
+                          child: Padding(
+                            padding:  EdgeInsets.all(cubit.getScreenWidth(context)*.02),
+                            child: const Text('SIGN OUT',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                    // fontSize: 15
+                                    )),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

@@ -4,9 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatappv1/shared/components/constants/const.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/cubit.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../Widgets/cover_photo.dart';
+import '../Widgets/profile_photo.dart';
 import '../models/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -27,18 +31,8 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Image(
-                              image: CachedNetworkImageProvider((userModel
-                                          .coverImg ==
-                                      'none')
-                                  ? 'https://img.freepik.com/free-photo/portrait-charming-brunet-men-white-tshirts-jeans-isolated-man-orange-jacket-show-thump-up-guy-checkered-shirt-show-peace-sign_197531-29589.jpg?w=1800&t=st=1707842534~exp=1707843134~hmac=eed91cb9cc45b18a19649e6468e0d6d768d9d4f07fff23febd39e042bddd974c'
-                                  : userModel.coverImg),
-                              fit: BoxFit.cover,
-                              height: cubit.getScreenHeight(context) * .32,
-                              width: double.infinity,
-                            ),
+                          CoverPhoto(
+                            imgUrl: userModel.coverImg,
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.min,
@@ -88,7 +82,30 @@ class ProfileScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                                "Friends",
+                                                "Followers",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width:
+                                                cubit.getScreenWidth(context) *
+                                                    .04,
+                                          ),
+                                          const Column(
+                                            children: [
+                                              Text(
+                                                "378",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Following",
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 16,
@@ -135,6 +152,7 @@ class ProfileScreen extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 cubit.editingBio
                                                     ? Expanded(
@@ -167,6 +185,9 @@ class ProfileScreen extends StatelessWidget {
                                                                   .08,
                                                               child: IconButton
                                                                   .filled(
+                                                                  style: ButtonStyle(
+                                                                    backgroundColor:MaterialStateColor.resolveWith((states) => defaultColor.withOpacity(.9)) ,
+                                                                  ),
                                                                       padding: const EdgeInsets
                                                                           .all(
                                                                           0),
@@ -181,6 +202,7 @@ class ProfileScreen extends StatelessWidget {
                                                                       icon: cubit
                                                                           .editingBioIcon),
                                                             ),
+
                                                           ),
                                                         ),
                                                       )
@@ -213,17 +235,21 @@ class ProfileScreen extends StatelessWidget {
                                                                               .w600),
                                                             ),
                                                           ),
-                                                // if (!cubit.editingBio) Spacer(),
+                                                // if (!cubit.editingBio) const Spacer(),
                                                 if (!cubit.editingBio)
                                                   SizedBox(
                                                     height:
                                                         cubit.getScreenWidth(
                                                                 context) *
                                                             .08,
-                                                    width: cubit.getScreenWidth(
-                                                            context) *
-                                                        .08,
+                                                    width:
+                                                        cubit.getScreenWidth(
+                                                                context) *
+                                                            .08,
                                                     child: IconButton.filled(
+                                                        style: ButtonStyle(
+                                                          backgroundColor:MaterialStateColor.resolveWith((states) => defaultColor.withOpacity(.9)) ,
+                                                        ),
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(0),
@@ -272,61 +298,6 @@ class ProfileScreen extends StatelessWidget {
                                                       .getScreenWidth(context) *
                                                   .03,
                                             ),
-                                            Card(
-                                              color: Colors.blueAccent
-                                                  .withOpacity(0.5),
-                                              clipBehavior:
-                                                  Clip.antiAliasWithSaveLayer,
-                                              elevation: 5.0,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                  left: cubit.getScreenWidth(
-                                                          context) *
-                                                      .01,
-                                                  right: cubit.getScreenWidth(
-                                                          context) *
-                                                      .03,
-                                                  top: cubit.getScreenWidth(
-                                                          context) *
-                                                      .03,
-                                                  bottom: cubit.getScreenWidth(
-                                                          context) *
-                                                      .03,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    CircleAvatar(
-                                                      radius:
-                                                          cubit.getScreenWidth(
-                                                                  context) *
-                                                              .08,
-                                                      backgroundColor:
-                                                          Colors.blue,
-                                                      backgroundImage:
-                                                          const CachedNetworkImageProvider(
-                                                              'https://img.freepik.com/free-photo/portrait-serious-young-businessman-glasses_1262-3810.jpg?w=1800&t=st=1707831312~exp=1707831912~hmac=ca308542d839cd7364cb0739c3f9fe58f26ac5b16baee0b62ef11205fb487020'),
-                                                    ),
-                                                    SizedBox(
-                                                      width:
-                                                          cubit.getScreenWidth(
-                                                                  context) *
-                                                              .02,
-                                                    ),
-                                                    const Text(
-                                                      "What's on your mind ?",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                      ),
-                                                    ),
-                                                    Spacer(),
-                                                    Icon(Icons.edit),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
                                             SizedBox(
                                               height: cubit
                                                       .getScreenWidth(context) *
@@ -341,42 +312,35 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Positioned(
-                            top: cubit.getScreenWidth(context) * .45,
-                            right: cubit.getScreenWidth(context) * .37,
-                            child: CircleAvatar(
-                                radius: cubit.getScreenWidth(context) * .127,
-                                backgroundColor: Colors.blueAccent,
-                                child: Stack(
-                                    alignment: Alignment.bottomRight,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage:
-                                            CachedNetworkImageProvider((userModel
-                                                        .img ==
-                                                    'none')
-                                                ? 'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'
-                                                : userModel.img),
-                                        radius:
-                                            cubit.getScreenWidth(context) * .12,
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            cubit.getScreenWidth(context) * .08,
-                                        width:
-                                            cubit.getScreenWidth(context) * .08,
-                                        child: IconButton.filled(
-                                            color: Colors.white,
-                                            padding: const EdgeInsets.all(0),
-                                            iconSize:
-                                                cubit.getScreenWidth(context) *
-                                                    .05,
-                                            onPressed: () {
-                                              cubit.editProfilePhoto();
-                                            },
-                                            icon: const Icon(Icons.edit)),
-                                      )
-                                    ])),
+                          Positioned(top: cubit.getScreenWidth(context) * .37,
+                            right: cubit.getScreenWidth(context) * .32,
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                ProfilePhoto(imgUrl: userModel.img,),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.width * .08,
+                                  width:
+                                      MediaQuery.of(context).size.width * .08,
+                                  child: IconButton.filled(
+                                    // highlightColor: defaultColor,
+                                    style: ButtonStyle(
+                                      backgroundColor:MaterialStateColor.resolveWith((states) => defaultColor.withOpacity(.9)) ,
+                                    ),
+                                      color: Colors.white,
+
+                                      padding: const EdgeInsets.all(0),
+                                      iconSize:
+                                          MediaQuery.of(context).size.width *
+                                              .05,
+                                      onPressed: () {
+                                        cubit.editProfilePhoto();
+                                      },
+                                      icon: const Icon(Icons.edit)),
+                                )
+                              ],
+                            ),
                           ),
                           Positioned(
                               top: cubit.getScreenWidth(context) * .55,
@@ -386,6 +350,9 @@ class ProfileScreen extends StatelessWidget {
                                 width: cubit.getScreenWidth(context) * .08,
                                 child: IconButton.filled(
                                     color: Colors.white,
+                                    style: ButtonStyle(
+                                      backgroundColor:MaterialStateColor.resolveWith((states) => defaultColor.withOpacity(.9)) ,
+                                    ),
                                     padding: const EdgeInsets.all(0),
                                     iconSize:
                                         cubit.getScreenWidth(context) * .05,

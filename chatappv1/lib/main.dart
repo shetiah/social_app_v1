@@ -1,7 +1,7 @@
 import 'package:chatappv1/layout/home_layout.dart';
 import 'package:chatappv1/modules/login_screen.dart';
-import 'package:chatappv1/modules/register_screen.dart';
-import 'package:chatappv1/modules/register_uName_image_screen.dart';
+import 'package:chatappv1/modules/register/register_screen.dart';
+import 'package:chatappv1/modules/register/register_uName_image_screen.dart';
 import 'package:chatappv1/shared/components/constants/const.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/cubit.dart';
 import 'package:chatappv1/shared/cubit/app_cubit/states.dart';

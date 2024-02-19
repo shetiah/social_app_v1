@@ -1,5 +1,5 @@
 import 'package:chatappv1/modules/login_screen.dart';
-import 'package:chatappv1/modules/register_uName_image_screen.dart';
+import 'package:chatappv1/modules/register/register_uName_image_screen.dart';
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
 import 'package:chatappv1/shared/cubit/register_cubit/cubit.dart';
 import 'package:chatappv1/shared/cubit/register_cubit/states.dart';

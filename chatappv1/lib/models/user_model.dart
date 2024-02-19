@@ -10,7 +10,8 @@ class UserModel {
    String bio='none';
 
   List<Post> myPosts = [];
-  List<UserModel> friends = [];
+  Map<String,UserModel> followingList = {};
+  Map<String,UserModel> followersList = {};
 
   UserModel(
       this.name, this.email, this.uId, this.userName, this.img, this.coverImg,this.bio);
@@ -24,9 +25,25 @@ class UserModel {
     coverImg = model?['coverImg'];
     // myPosts = model?['myPosts'];
     // friends = model?['friends'];
+    // followersList=model?['followers']['id'];
+    followersList={};
+    followingList={};
     bio=model?['bio'];
   }
 
+  UserModel.followingFromJson(Map<String, dynamic> followersListJson){
+    followersList.forEach((key, value) {
+    // this.followersList.addAll()
+  });
+    for(int i =0;i<followersListJson.length;i++)
+      {
+
+      }
+  }
+  // UserModel.followingFromJson(Map<String, dynamic>? followingListJson){
+  //
+  // }
+  //
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -35,8 +52,9 @@ class UserModel {
       'userName': userName,
       'img': img,
       'coverImg': coverImg,
-      'myPosts': {},
-      'friends': {},
+      'myPosts': [],
+      'following-list': followingList.keys.toList(),
+      'followers-list': followersList.keys.toList(),
       'bio' :bio
     };
   }

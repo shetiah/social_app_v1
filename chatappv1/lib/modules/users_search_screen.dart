@@ -3,8 +3,6 @@ import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../shared/components/myWidgets/user_card.dart';
 import '../shared/cubit/app_cubit/cubit.dart';
 
 class UsersScreen extends StatelessWidget {
@@ -13,7 +11,9 @@ class UsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (BuildContext context, state) {},
+      listener: (BuildContext context, state) {
+
+      },
       builder: (BuildContext context, state) {
         var cubit = AppCubit.get(context);
         return Scaffold(
@@ -28,8 +28,9 @@ class UsersScreen extends StatelessWidget {
                   onSubmit: (v) {
                     return v;
                   },
-                  onChange: (v) {
-                    cubit.searching(v);
+                  onChange: (v) async {
+                    // cubit.usersCards=[];
+                    await cubit.searching();
                     return v;
                   },
                   onTap: () {},
@@ -69,9 +70,11 @@ class UsersScreen extends StatelessWidget {
             //           );
             //   },
             // )),
-            Expanded(child: ListView(
-            children:    cubit.usersCards,
+           if(state is NameSearchingState) Expanded(child: ListView(
+            children:    (cubit.usersCards).toSet().toList(),
       ))
+          ,if(state is NameSearchingLoadingState)const Center(child: CircularProgressIndicator())
+
           ],
         ));
       },

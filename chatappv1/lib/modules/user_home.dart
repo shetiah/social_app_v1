@@ -282,10 +282,10 @@ class UserHomeScreen extends StatelessWidget {
                       // ),
                       ListView.separated(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => buildPostItem(
                             AppCubit.get(context).posts[index], context),
-                        separatorBuilder: (context, index) => SizedBox(
+                        separatorBuilder: (context, index) =>const  SizedBox(
                           height: 8.0,
                         ),
                         itemCount: AppCubit.get(context).posts.length,

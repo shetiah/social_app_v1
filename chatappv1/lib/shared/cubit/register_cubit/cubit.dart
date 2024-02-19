@@ -23,30 +23,65 @@ class RegisterCubit extends Cubit<RegisterStates> {
   var emailRegisterController = TextEditingController();
   var passwordRegisterController = TextEditingController();
   var phoneRegisterController = TextEditingController();
-
-  late File profileImage;
-
+  late File profileImageFile;
   var picker = ImagePicker();
-  Future<void> getProfileImage() async {
+  bool firstTime = true;
+
+  Future<void> chooseProfilePhoto() async {
     emit(ProfileImagePickedLoadingState());
     try {
       final XFile? image = await ImagePicker().pickImage(
         source: ImageSource.gallery,
       );
-      // profileImage = File(image!.path);
-
       if (image != null) {
-        profileImage = File(image.path);
-        userImg = profileImage!.path;
+        profileImageFile = File(image.path);
         print(image.path);
+        await chooseProfileImageFireStorage();
+        firstTime = false;
         emit(ProfileImagePickedSuccessState());
       } else {
-        print('No image selected.');
-        emit(ProfileImagePickedErrorState());
+        // print('No image selected.');
+        emit(ProfileImagePickedErrorState('No image selected.'));
       }
     } catch (error) {
-      emit(ProfileImagePickedErrorState());
+      emit(ProfileImagePickedErrorState(error.toString()));
     }
+  }
+
+  Future<void> chooseProfileImageOnFireStore(
+      {required String imagePath}) async {
+    try {
+      emit(ProfileImageUploadFireStoreSuccessState());
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uId)
+          .update({'img': imagePath}).then((value) {
+        userModel.img = imagePath;
+        userImg=userModel.img;
+        emit(ProfileImageUploadFireStoreSuccessState());
+      });
+    } catch (nError) {
+      emit(ProfileImageUploadFireStoreErrorState(nError.toString()));
+    }
+  }
+
+  Future<void> chooseProfileImageFireStorage() async {
+    emit(ProfileImageUploadFireStoreLoadingState());
+    // var imgFile=(profileImageFile==null)?
+    await storageRef
+        .child(
+            'users/images/${Uri.file(profileImageFile.path).pathSegments.last}')
+        .putFile(profileImageFile)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        chooseProfileImageOnFireStore(imagePath: value);
+        emit(ProfileImageUploadFireStoreSuccessState());
+      }).catchError((error) {
+        emit(ProfileImageUploadFireStoreErrorState(error.toString()));
+      });
+    }).catchError((error) {
+      emit(ProfileImageUploadFireStoreErrorState(error.toString()));
+    });
   }
 
   getScreenWidth(context) {
@@ -61,28 +96,28 @@ class RegisterCubit extends Cubit<RegisterStates> {
   var Controller = TextEditingController();
   var formRegisterKey2 = GlobalKey<FormState>();
 
-  bool result=false;
-  Future<bool> isUserNameTaken(String username)  async {
-    bool isTaken=false;
+  bool result = false;
+
+  Future<bool> isUserNameTaken(String username) async {
+    bool isTaken = false;
     var y;
-    int count=0;
+    int count = 0;
     emit(CheckingUNameLoading());
     await FirebaseFirestore.instance
         .collection('users')
         .where('userName', isEqualTo: username)
         .get()
         .then((x) {
-          count=x.size;
+      count = x.size;
       if (x.size > 0) {
-
         print(x.size);
-        isTaken=true;
-        y=x;
+        isTaken = true;
+        y = x;
       }
     });
     print(count);
     emit(CheckingUserNameState());
-    return (count>0)?true:false;
+    return (count > 0) ? true : false;
   }
 
   late String userEmail;
@@ -91,7 +126,9 @@ class RegisterCubit extends Cubit<RegisterStates> {
   late String userName;
   String userImg = 'none';
 
- bool registered=false;
+  // bool F
+  bool registered = false;
+
   Future<void> userRegister({
     required String email,
     required String password,
@@ -101,8 +138,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
     try {
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: email, password: password)
+          .createUserWithEmailAndPassword(email: email, password: password)
           .then((v) {
         userCreate(
                 uId: v.user!.uid,
@@ -117,7 +153,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
           uId = v.user!.uid;
           userModel = user;
           // registerStage = 2;
-          registered=true;
+          registered = true;
           registerStage = 2;
           userEmail = email;
           userPassword = password;
@@ -126,20 +162,27 @@ class RegisterCubit extends Cubit<RegisterStates> {
         });
       });
     } catch (nError) {
-      registered=false;
+      registered = false;
       emit(RegisterErrorState(nError.toString()));
     }
   }
 
-  //3ndna mshakllll fl register imgss
   Future<void> userRegisterUserName() async {
     emit(RegisterLoadingState());
     try {
+      if (firstTime) {
+        await chooseProfileImageOnFireStore(
+            imagePath:
+                'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=626&ext=jpg&ga=GA1.1.1408831830.1708179560&semt=ais');
+      }
+      // else{
+      //   await chooseProfileImageFireStorage();
+      // }
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uId)
-          .update({'userName': userName, 'img': userImg}).then((value) {
-        userModel.img = userImg;
+          .update({'userName': userName}).then((value) {
         userModel.userName = userName;
         emit(RegisterFinishedState());
       });

@@ -345,7 +345,7 @@ class PostScreen extends StatelessWidget {
                                                   child: const Icon(
                                                     Icons.camera_alt_outlined,
                                                     color: Colors.white,
-                                                  ),
+                                                  )
                                                 ),
                                                 SizedBox(
                                                     width:

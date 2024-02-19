@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
 import 'package:flutter/material.dart';
 
-import '../layout/home_layout.dart';
+import '../../layout/home_layout.dart';
 
 class RegisterNmImgScreen extends StatelessWidget {
   const RegisterNmImgScreen(this.cubit, {super.key});
@@ -24,13 +24,13 @@ class RegisterNmImgScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider((cubit.userImg ==
                           'none')
-                      ? 'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'
+                      ? 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=626&ext=jpg&ga=GA1.1.1408831830.1708179560&semt=ais'
                       : cubit.userImg),
                   radius: cubit.getScreenWidth(context) * .2,
                 ),
                 IconButton.filled(
                     onPressed: () async {
-                      await cubit.getProfileImage();
+                      await cubit.chooseProfilePhoto();
                     },
                     icon: const Icon(Icons.edit)),
               ],
@@ -89,7 +89,7 @@ class RegisterNmImgScreen extends StatelessWidget {
                      cubit.result= await cubit.isUserNameTaken( cubit.Controller.text);
                       cubit.formRegisterKey2.currentState!.validate();
                       if (cubit.formRegisterKey2.currentState!.validate()) {
-                        cubit.userName = cubit.Controller.t2ext;
+                        cubit.userName = cubit.Controller.text;
                         cubit.userRegisterUserName();
                         navigateAndFinish(context, const HomeScreen());
                       }
