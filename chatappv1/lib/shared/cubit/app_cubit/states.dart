@@ -1,3 +1,5 @@
+import '../../../models/user_model.dart';
+
 abstract class AppStates {}
 
 class InitState extends AppStates {}
@@ -78,4 +80,9 @@ class RemovedFriendState extends AppStates{}
 class GetMyFollowingListSuccessState extends AppStates{}
 class GetMyFollowingListLoadingState extends AppStates{}
 class GetAnyUserListsLoadingState extends AppStates{}
-class GetAnyUserListsSuccessState extends AppStates{}
+class GetAnyUserListsSuccessState extends AppStates{
+  final UserModel model;
+
+  GetAnyUserListsSuccessState(this.model);
+
+}

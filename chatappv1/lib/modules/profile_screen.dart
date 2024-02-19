@@ -331,11 +331,11 @@ class ProfileScreen extends StatelessWidget {
                                                     //     ));
                                                     return InkWell(
                                                       onTap: (){
-                                                        navigateTo(context, OtherUser(model: userModel
+                                                        navigateTo(context, OtherUser(uId: userModel
                                                             .followingList
                                                             .values
                                                             .elementAt(
-                                                            index)));
+                                                            index).uId));
                                                       },
                                                       child: SizedBox(
                                                         width:
@@ -472,11 +472,11 @@ class ProfileScreen extends StatelessWidget {
                                                       (context, index) {
                                                     return InkWell(
                                                       onTap: (){
-                                                        navigateTo(context, OtherUser(model: userModel
+                                                        navigateTo(context, OtherUser(uId: userModel
                                                             .followersList
                                                             .values
                                                             .elementAt(
-                                                            index)));
+                                                            index).uId));
                                                       },
                                                       child: SizedBox(
                                                         width:

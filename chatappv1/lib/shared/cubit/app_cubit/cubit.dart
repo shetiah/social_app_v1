@@ -129,8 +129,6 @@ class AppCubit extends Cubit<AppStates> {
 
   late File coverImagePath;
 
-
-
   Future<void> editCoverPhoto() async {
     emit(CoverEditLoadingState());
     try {
@@ -350,36 +348,37 @@ class AppCubit extends Cubit<AppStates> {
     // }
     return model;
   }
-  UserModel initUserLists({required UserModel model}) {
+  Future<void> initUserLists(String uId) async {
     // model = UserModel.fromJson(userTemp);
     emit(GetAnyUserListsLoadingState());
+ UserModel model= await getAnyUser(uId);
+    print('the id of user  is is $uId');
     model.followersList = {};
     var usersCollection = FirebaseFirestore.instance.collection('users');
-    var userDoc;
-    // userDoc=
-    usersCollection.doc(model.uId).get().then((value) {
-      userDoc = value;
-      var data = userDoc.data();
-      List<dynamic> tempList = data?['followers-list'];
-      for (var uId in tempList) {
-        UserModel tempUser;
-        getAnyUser(uId).then((value) {
-          tempUser = value;
-          model.followersList.addAll({uId: tempUser});
-        });
-      }
-      model.followingList = {};
-      tempList = data?['following-list'];
-      for (var uId in tempList) {
-        UserModel tempUser;
-        getAnyUser(uId).then((value) {
-          tempUser = value;
-          model.followingList.addAll({uId: tempUser});
-        });
-      }
-      emit(GetAnyUserListsSuccessState());
-    });
-    return model;
+
+    var userDoc=await  usersCollection.doc(model.uId).get();
+    var data = userDoc.data();
+
+    List<dynamic> tempList = data?['followers-list'];
+    print('data?[\'followers-list\'] is ${data?['followers-list'].length}');
+    for (var id in tempList) {
+      UserModel tempUser;
+      getAnyUser(id).then((value) {
+        tempUser = value;
+        model.followersList.addAll({id: tempUser});
+        print(' model.followersList: ${model.followersList.length}');
+
+      });
+    }
+    model.followingList = {};
+    tempList = data?['following-list'];
+    for (var id in tempList) {
+      UserModel tempUser =await getAnyUser(id);
+      model.followingList.addAll({id: tempUser});
+    }
+    print(model.name);
+    emit(GetAnyUserListsSuccessState(model));
+
   }
 
 // var late allResults;

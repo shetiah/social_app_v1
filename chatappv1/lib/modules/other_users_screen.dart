@@ -11,27 +11,33 @@ import '../shared/cubit/app_cubit/cubit.dart';
 import '../shared/cubit/app_cubit/states.dart';
 
 class OtherUser extends StatelessWidget {
-   OtherUser({super.key, required this.model});
+   OtherUser({super.key, required this.uId});
+   final String uId;
 
-   UserModel model;
-
+   var model;
+   // late model2
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit(),
+      create: (BuildContext context) => AppCubit()..initUserLists(uId),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {
-          // if(state is )
+          if(state is GetAnyUserListsSuccessState ) {
+            print(state.model.name);
+           model=state.model;
+            print(model.name);
+          }
         },
         builder: (BuildContext context, AppStates state) {
           var cubit = AppCubit.get(context);
           // model=cubit.initUserLists(model: model);
           return Scaffold(
             appBar: AppBar(),
-            body: Column(
+            body:(state is! GetAnyUserListsLoadingState)? Column(
               children: [
-                Expanded(
+              Expanded(
                   child: SingleChildScrollView(
+
                     child: Column(
                       children: [
                         Stack(
@@ -318,11 +324,11 @@ class OtherUser extends StatelessWidget {
                                                       (context, index) {
                                                     return InkWell(
                                                       onTap: (){
-                                                        navigateTo(context, OtherUser(model: model
+                                                        navigateTo(context, OtherUser(uId: model
                                                             .followingList
                                                             .values
                                                             .elementAt(
-                                                            index)));
+                                                            index).uId));
                                                       },
                                                       child: SizedBox(
                                                         width:
@@ -459,11 +465,11 @@ class OtherUser extends StatelessWidget {
                                                       (context, index) {
                                                     return InkWell(
                                                       onTap: (){
-                                                        navigateTo(context, OtherUser(model: model
+                                                        navigateTo(context, OtherUser(uId: model
                                                             .followersList
                                                             .values
                                                             .elementAt(
-                                                            index)));
+                                                            index).uId));
                                                       },
                                                       child: SizedBox(
                                                         width:
@@ -564,7 +570,7 @@ class OtherUser extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
+            ):Center(child: CircularProgressIndicator()),
           );
         },
       ),

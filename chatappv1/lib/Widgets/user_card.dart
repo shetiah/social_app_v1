@@ -26,7 +26,7 @@ class UserCard extends StatelessWidget {
             ),
             child: InkWell(
               onTap: (){
-                navigateTo(context, OtherUser(model: model));
+                navigateTo(context, OtherUser(uId: model.uId));
               },
               child: Row(
                 children: [
