@@ -1,35 +1,34 @@
-class Post {
- String userName;
- String userAvatar;
- String image;
- String caption;
- String date;
+class PostModel {
+ String ?uId;
+ late String image;
+ String ?caption;
+ late String date;
+ Map<String,String> comments={};
+ Map<String,String> likes={};
+ List<String> hashtags=[];
+ PostModel(String image)   {
+   this.image=image;
+  date=DateTime.now().toString();
+ }
+  PostModel.fromJson(Map<String, dynamic> ?model) {
+    image = model?['image'];
+    caption = model?['caption'];
+    uId = model?['uId'];
+    comments=model?['comments'];
+    date=model?['date'];
+    likes=model?['likes'];
+    hashtags=model?['hashtags'];
 
-  List<String> comments=[];
-  int likes=0;
-  bool likedByUser=false;
-  bool savedByUser=false;
-  bool isHashtags=false;
-  List<String> hashtags=[];
-
- Post(this.userName, this.userAvatar, this.image,this.caption,this.date);
-
-//
-  // Post.fromJson(Map<String, dynamic> ?model) {
-  //   name = model?['name'];
-  //   phone = model?['phone'];
-  //   email = model?['email'];
-  //   uId = model?['uId'];
-  //   emailVerfied = model?['emailVerfied'];
-  // }
-  //
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'name': name,
-  //     'phone': phone,
-  //     'email': email,
-  //     'uId': uId,
-  //     'emailVerfied': emailVerfied
-  //   };
-  // }
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'image': image,
+      'caption': caption,
+      'uId': uId,
+      'comments': comments,
+      'date': date,
+      'likes': likes,
+      'hashtags': hashtags,
+    };
+  }
 }

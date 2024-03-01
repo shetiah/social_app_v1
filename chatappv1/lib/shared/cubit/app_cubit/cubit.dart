@@ -46,10 +46,23 @@ class AppCubit extends Cubit<AppStates> {
     const ProfileScreen(),
   ];
   var controller = TextEditingController();
-  List<Post> posts = [];
+  List<PostModel> posts = [];
   int bottomNavIndex = 0;
   double width = 0;
   bool expands = true;
+
+  var formKey = GlobalKey<FormState>();
+
+  Color postIconColor = Colors.grey;
+
+  validatePostPossibility() {
+    bool ret = controller.text.isEmpty;
+    postIconColor = (ret) ? Colors.grey : defaultColor;
+    emit(ValidatePostPossibilityState());
+    return ret;
+  }
+
+  // var postFormKey= GlobalKey<FormKe>
 
   // double containerSize=getScreenHeight(context) * .2;
   void bottomSheetPress() {
@@ -256,6 +269,24 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
+  Future<void> getMyPostsList() async {
+    var usersCollection = FirebaseFirestore.instance.collection('users');
+    var postsCollection =
+        await usersCollection.doc(userModel.uId).collection('posts');
+    // var data = userDoc.data();
+    // print(data?['following-list'].runtimeType);
+    // print(data?['following-list']);
+    // // print( data?['following-list'].);
+    // List<dynamic> tempList = data?['following-list'];
+    // for (var uId in tempList) {
+    //   print('xxxxxxxxxxxxxxx');
+    //   UserModel tempUser = await getAnyUser(uId);
+    //   userModel.followingList.addAll({uId: tempUser});
+    // }
+    // print(userModel.followingList.length);
+    // emit(GetMyFollowingListSuccessState());
+  }
+
   // UserModel initAnyUserData() {
   //   emit(GetUserLoadingState());
   //   UserModel model;
@@ -348,37 +379,33 @@ class AppCubit extends Cubit<AppStates> {
     // }
     return model;
   }
+
   Future<void> initUserLists(String uId) async {
     // model = UserModel.fromJson(userTemp);
     emit(GetAnyUserListsLoadingState());
- UserModel model= await getAnyUser(uId);
+    UserModel model = await getAnyUser(uId);
     print('the id of user  is is $uId');
     model.followersList = {};
     var usersCollection = FirebaseFirestore.instance.collection('users');
 
-    var userDoc=await  usersCollection.doc(model.uId).get();
+    var userDoc = await usersCollection.doc(model.uId).get();
     var data = userDoc.data();
 
     List<dynamic> tempList = data?['followers-list'];
     print('data?[\'followers-list\'] is ${data?['followers-list'].length}');
     for (var id in tempList) {
-      UserModel tempUser;
-      getAnyUser(id).then((value) {
-        tempUser = value;
-        model.followersList.addAll({id: tempUser});
-        print(' model.followersList: ${model.followersList.length}');
-
-      });
+      UserModel tempUser = await getAnyUser(id);
+      model.followersList.addAll({id: tempUser});
+      print(' model.followersList: ${model.followersList.length}');
     }
     model.followingList = {};
     tempList = data?['following-list'];
     for (var id in tempList) {
-      UserModel tempUser =await getAnyUser(id);
+      UserModel tempUser = await getAnyUser(id);
       model.followingList.addAll({id: tempUser});
     }
     print(model.name);
     emit(GetAnyUserListsSuccessState(model));
-
   }
 
 // var late allResults;
@@ -398,7 +425,6 @@ class AppCubit extends Cubit<AppStates> {
       emit(NameSearchingState());
       return;
     }
-
 
     // emit(NameSearchingLoadingState());
     searchedName = searched;

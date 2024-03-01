@@ -8,6 +8,7 @@ class InitState extends AppStates {}
 class GetUserLoadingState extends AppStates {}
 
 class GetUserSuccessState extends AppStates {}
+class ValidatePostPossibilityState extends AppStates {}
 
 class GetUserErrorState extends AppStates {
   final String error;

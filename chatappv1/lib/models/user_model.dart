@@ -9,7 +9,7 @@ class UserModel {
    String coverImg='none';
    String bio='none';
 
-  List<Post> myPosts = [];
+  Map<String,PostModel> myPosts = {};
   Map<String,UserModel> followingList = {};
   Map<String,UserModel> followersList = {};
 
@@ -23,11 +23,9 @@ class UserModel {
     userName = model?['userName'];
     img = model?['img'];
     coverImg = model?['coverImg'];
-    // myPosts = model?['myPosts'];
-    // friends = model?['friends'];
-    // followersList=model?['followers']['id'];
-    followersList={};
-    followingList={};
+    // followersList=model?['followers-list'];
+    // followingList=model?['following-list'];
+    // myPosts=model?['posts'];
     bio=model?['bio'];
   }
 
@@ -52,7 +50,7 @@ class UserModel {
       'userName': userName,
       'img': img,
       'coverImg': coverImg,
-      'myPosts': [],
+      'posts': myPosts.keys.toList(),
       'following-list': followingList.keys.toList(),
       'followers-list': followersList.keys.toList(),
       'bio' :bio

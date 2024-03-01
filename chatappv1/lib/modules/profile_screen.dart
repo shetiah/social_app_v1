@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatappv1/Widgets/post.dart';
 import 'package:chatappv1/modules/other_users_screen.dart';
 import 'package:chatappv1/shared/components/components/my_main_components.dart';
 import 'package:chatappv1/shared/components/constants/const.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Widgets/cover_photo.dart';
 import '../Widgets/profile_photo.dart';
+import '../models/post_model.dart';
 import '../models/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -552,10 +554,15 @@ class ProfileScreen extends StatelessWidget {
                                                     return SizedBox(
                                                       width: 10,
                                                     );
+
                                                   },
                                                   // scrollDirection: Axis.horizontal,
                                                 ),
                                               ),
+                                              SizedBox(
+                                                height:cubit.getScreenWidth(context)*.02,
+                                              ),
+                                              Post(model: PostModel(userModel.img), userName: userModel.name, userProfile: userModel.img, onLike: (){},)
                                             ],
                                           ),
                                         ),

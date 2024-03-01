@@ -29,7 +29,7 @@ class PostScreen extends StatelessWidget {
                       cubit.changeIndex(0, context);
                     },
                     child: CircleAvatar(
-                        backgroundColor:defaultColor,
+                        backgroundColor: defaultColor,
                         child: Icon(
                           Icons.close,
                           color: Colors.white,
@@ -40,18 +40,21 @@ class PostScreen extends StatelessWidget {
                 title: const Text('Create Post'),
                 actions: [
                   Container(
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color:defaultColor,
+                      color: cubit.postIconColor,
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // cubit.fo
+                        cubit.formKey.currentState?.validate();
+                      },
                       child: const Text(
                         'POST',
                         style: TextStyle(
-                            color:Colors.white,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
+
                     ),
                   ),
                 ],
@@ -81,29 +84,30 @@ class PostScreen extends StatelessWidget {
                                       radius:
                                           cubit.getScreenWidth(context) * .08,
                                       backgroundColor: Colors.blue,
-                                      backgroundImage:
-                                          const CachedNetworkImageProvider(
-                                              'https://img.freepik.com/free-photo/portrait-serious-young-businessman-glasses_1262-3810.jpg?w=1800&t=st=1707831312~exp=1707831912~hmac=ca308542d839cd7364cb0739c3f9fe58f26ac5b16baee0b62ef11205fb487020',
-                                              cacheKey: 'UniqueKey()'),
+                                      backgroundImage: CachedNetworkImageProvider(
+                                          (userModel.img == 'none')
+                                              ? 'https://img.freepik.com/free-photo/portrait-serious-young-businessman-glasses_1262-3810.jpg?w=1800&t=st=1707831312~exp=1707831912~hmac=ca308542d839cd7364cb0739c3f9fe58f26ac5b16baee0b62ef11205fb487020'
+                                              : userModel.img,
+                                        ),
                                     ),
                                     SizedBox(
                                       width:
                                           cubit.getScreenWidth(context) * .03,
                                     ),
-                                    const Column(
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Abdelrahman Shetiah",
-                                          style: TextStyle(
+                                          userModel.name,
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color:
                                                 Color.fromRGBO(11, 11, 59, 1),
                                             fontSize: 16,
                                           ),
                                         ),
-                                        Text(
+                                       const Text(
                                           "On Your Timeline",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -122,7 +126,11 @@ class PostScreen extends StatelessWidget {
                                 TextFormField(
                                     controller: cubit.controller,
                                     autofocus: false,
+                                    key: cubit.formKey,
                                     maxLines: null,
+                                    onChanged: (v){
+                                      cubit.validatePostPossibility();
+                                    },
                                     decoration: const InputDecoration(
                                         hintText: "What's on your mind ?",
                                         hintStyle: TextStyle(
@@ -145,26 +153,28 @@ class PostScreen extends StatelessWidget {
                                     : cubit.getScreenHeight(context) * .2,
                                 width: double.infinity,
                                 decoration: const BoxDecoration(
-                                  color: Color.fromARGB(200, 43, 49, 162) ,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Color.fromARGB(200, 43, 49, 162),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20)),
                                 ),
                                 duration: const Duration(milliseconds: 200),
                                 child: !cubit.expands
                                     ? SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                      child: Column(
+                                        physics: const BouncingScrollPhysics(),
+                                        child: Column(
                                           children: [
                                             SizedBox(
                                                 height: cubit.getScreenHeight(
                                                         context) *
                                                     .003),
                                             InkWell(
-                                              child:  Icon(
-                                                Icons.arrow_circle_down,
-                                                color: Colors.white,
-                                                size:cubit.getScreenWidth(context)*.09
-                                              ),
+                                              child: Icon(
+                                                  Icons.arrow_circle_down,
+                                                  color: Colors.white,
+                                                  size: cubit.getScreenWidth(
+                                                          context) *
+                                                      .09),
                                               onTap: () {
                                                 cubit.bottomSheetPress();
                                               },
@@ -184,7 +194,9 @@ class PostScreen extends StatelessWidget {
                                                               .01),
                                                   Column(
                                                     // mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Row(
                                                         children: [
@@ -219,9 +231,9 @@ class PostScreen extends StatelessWidget {
                                                         ],
                                                       ),
                                                       SizedBox(
-                                                          height:
-                                                          cubit.getScreenHeight(
-                                                              context) *
+                                                          height: cubit
+                                                                  .getScreenHeight(
+                                                                      context) *
                                                               .008),
                                                       Row(
                                                         children: [
@@ -256,9 +268,9 @@ class PostScreen extends StatelessWidget {
                                                         ],
                                                       ),
                                                       SizedBox(
-                                                          height:
-                                                          cubit.getScreenHeight(
-                                                              context) *
+                                                          height: cubit
+                                                                  .getScreenHeight(
+                                                                      context) *
                                                               .008),
                                                       Row(
                                                         children: [
@@ -299,11 +311,11 @@ class PostScreen extends StatelessWidget {
                                             )
                                           ],
                                         ),
-                                    )
+                                      )
                                     : SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                      child: Column(
-                                         children: [
+                                        physics: const BouncingScrollPhysics(),
+                                        child: Column(
+                                          children: [
                                             SizedBox(
                                                 height: cubit.getScreenHeight(
                                                         context) *
@@ -312,10 +324,12 @@ class PostScreen extends StatelessWidget {
                                               onTap: () {
                                                 cubit.bottomSheetPress();
                                               },
-                                              child:  Icon(
+                                              child: Icon(
                                                 Icons.arrow_circle_up_rounded,
                                                 color: Colors.white,
-                                                size: cubit.getScreenWidth(context)*.08,
+                                                size: cubit.getScreenWidth(
+                                                        context) *
+                                                    .08,
                                               ),
                                             ),
                                             SizedBox(
@@ -341,14 +355,13 @@ class PostScreen extends StatelessWidget {
                                                                 context) *
                                                             .01),
                                                 InkWell(
-                                                  onTap: () {
-                                                    cubit.bottomSheetPress();
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.camera_alt_outlined,
-                                                    color: Colors.white,
-                                                  )
-                                                ),
+                                                    onTap: () {
+                                                      cubit.bottomSheetPress();
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color: Colors.white,
+                                                    )),
                                                 SizedBox(
                                                     width:
                                                         cubit.getScreenHeight(
@@ -367,7 +380,7 @@ class PostScreen extends StatelessWidget {
                                             )
                                           ],
                                         ),
-                                    )),
+                                      )),
                             // AnimatedContainer(
                             //    height:
                             //        cubit.getScreenHeight(context) * .1,
