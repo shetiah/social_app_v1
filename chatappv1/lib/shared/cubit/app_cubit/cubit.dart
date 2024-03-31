@@ -11,7 +11,6 @@ import 'package:chatappv1/shared/cubit/app_cubit/states.dart';
 import 'package:chatappv1/shared/network/local/cacheHelper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,11 +25,17 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   getScreenWidth(context) {
-    return MediaQuery.of(context).size.width;
+    return MediaQuery
+        .of(context)
+        .size
+        .width;
   }
 
   getScreenHeight(context) {
-    return MediaQuery.of(context).size.height;
+    return MediaQuery
+        .of(context)
+        .size
+        .height;
   }
 
   bool isBottomSheetShownPostScreen = false;
@@ -40,7 +45,7 @@ class AppCubit extends Cubit<AppStates> {
   var bioTextFieldFocus = FocusNode();
   List<Widget> screens = [
     const UserHomeScreen(),
-    const PostScreen(),
+     PostScreen(),
     const UsersScreen(),
     const ChatsScreen(),
     const ProfileScreen(),
@@ -62,6 +67,70 @@ class AppCubit extends Cubit<AppStates> {
     return ret;
   }
 
+  onImagePosting()
+  async {
+    emit(UploadImageOnPostLoading());
+    try {
+      final XFile? image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+      );
+      if (image != null) {
+        File imgFile=File(image.path);
+        // profileImageFile = File(image.path);
+
+       // await onImagePostingFirebaseStorage(imgFile: imgFile);
+        emit(UploadImageOnPostSuccess(imgFile:imgFile));
+
+      } else {
+        print('No image selected.');
+        // emit(ProfileEditErrorState());
+      }
+    } catch (error) {
+      print(error.toString());
+      // emit(ProfileEditErrorState());
+    }
+  }
+
+  Future<String?> onImagePostingFirebaseStorage({required File imgFile}) async {
+    emit(UploadImageOnPostLoadingFirebaseStorage());
+  return  await storageRef
+        .child(
+        'users/images/${Uri.file(imgFile.path).pathSegments.last}')
+        .putFile(imgFile)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        // updateProfileImageOnFireStore(imagePath: value);
+        emit(UploadImageOnPostSuccessFirebaseStorage(imgPath: value));
+
+      }).catchError((error) {
+        print(error.toString());
+        return error.toString();
+        // emit(UploadProfileImageOnStoreError());
+      });
+    }).catchError((error) {
+      print(error.toString());
+      return error.toString();
+    });
+    print('eerrrroe');
+    return 'error happened';
+  }
+  // Future<void> updatePostImageOnFireStore(
+  //     {required String imagePath}) async {
+  //   try {
+  //     emit(ProfileUpdateLoadingState());
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(uId)
+  //         .update({'img': imagePath}).then((value) {
+  //       userModel.img = imagePath;
+  //       emit(ProfileUpdateSuccessState());
+  //     });
+  //   } catch (nError) {
+  //     emit(ProfileUpdateErrorState(nError.toString()));
+  //   }
+  // }
+
+
   // var postFormKey= GlobalKey<FormKe>
 
   // double containerSize=getScreenHeight(context) * .2;
@@ -74,7 +143,7 @@ class AppCubit extends Cubit<AppStates> {
 // Widget defHomeWidget=cubit.bottomNavIndex==1? navigateTo(context,PostScreen()) :
   void changeIndex(index, context) {
     if (index == 1) {
-      navigateTo(context, const PostScreen());
+      navigateTo(context,  PostScreen());
       emit(ChangeBottomToPostScreen());
     } else {
       bottomNavIndex = index;

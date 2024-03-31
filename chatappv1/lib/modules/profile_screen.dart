@@ -85,12 +85,12 @@ class ProfileScreen extends StatelessWidget {
                                                 Text(
                                                   userModel.followersList.length
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20,
                                                   ),
                                                 ),
-                                                Text(
+                                                const Text(
                                                   "Followers",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
@@ -109,12 +109,12 @@ class ProfileScreen extends StatelessWidget {
                                                 Text(
                                                   userModel.followingList.length
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20,
                                                   ),
                                                 ),
-                                                Text(
+                                                const Text(
                                                   "Following",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
@@ -332,18 +332,22 @@ class ProfileScreen extends StatelessWidget {
                                                     //     .elementAt(index)
                                                     //     ));
                                                     return InkWell(
-                                                      onTap: (){
-                                                        navigateTo(context, OtherUser(uId: userModel
-                                                            .followingList
-                                                            .values
-                                                            .elementAt(
-                                                            index).uId));
+                                                      onTap: () {
+                                                        navigateTo(
+                                                            context,
+                                                            OtherUser(
+                                                                uId: userModel
+                                                                    .followingList
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .uId));
                                                       },
                                                       child: SizedBox(
-                                                        width:
-                                                            cubit.getScreenWidth(
+                                                        width: cubit
+                                                                .getScreenWidth(
                                                                     context) *
-                                                                .25,
+                                                            .25,
                                                         child: Column(
                                                           children: [
                                                             CircleAvatar(
@@ -353,7 +357,8 @@ class ProfileScreen extends StatelessWidget {
                                                                         .width *
                                                                     .1,
                                                                 backgroundColor:
-                                                                    Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 child:
                                                                     CircleAvatar(
                                                                   backgroundImage: CachedNetworkImageProvider((userModel
@@ -390,7 +395,8 @@ class ProfileScreen extends StatelessWidget {
                                                                         index)
                                                                     .name,
                                                                 style: const TextStyle(
-                                                                    fontSize: 15,
+                                                                    fontSize:
+                                                                        15,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -473,18 +479,22 @@ class ProfileScreen extends StatelessWidget {
                                                   itemBuilder:
                                                       (context, index) {
                                                     return InkWell(
-                                                      onTap: (){
-                                                        navigateTo(context, OtherUser(uId: userModel
-                                                            .followersList
-                                                            .values
-                                                            .elementAt(
-                                                            index).uId));
+                                                      onTap: () {
+                                                        navigateTo(
+                                                            context,
+                                                            OtherUser(
+                                                                uId: userModel
+                                                                    .followersList
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .uId));
                                                       },
                                                       child: SizedBox(
-                                                        width:
-                                                            cubit.getScreenWidth(
+                                                        width: cubit
+                                                                .getScreenWidth(
                                                                     context) *
-                                                                .25,
+                                                            .25,
                                                         child: Column(
                                                           children: [
                                                             CircleAvatar(
@@ -494,14 +504,23 @@ class ProfileScreen extends StatelessWidget {
                                                                         .width *
                                                                     .1,
                                                                 backgroundColor:
-                                                                    Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 child:
                                                                     CircleAvatar(
-                                                                  backgroundImage: CachedNetworkImageProvider((userModel.followersList.values.elementAt(index)
+                                                                  backgroundImage: CachedNetworkImageProvider((userModel
+                                                                              .followersList
+                                                                              .values
+                                                                              .elementAt(
+                                                                                  index)
                                                                               .img ==
                                                                           'none')
                                                                       ? 'https://img.freepik.com/free-vector/sharing-content-social-media-with-man-smartphone_23-2148518566.jpg?size=626&ext=jpg&ga=GA1.1.1374943836.1707644974&semt=ais'
-                                                                      : userModel.followersList.values.elementAt(index)
+                                                                      : userModel
+                                                                          .followersList
+                                                                          .values
+                                                                          .elementAt(
+                                                                              index)
                                                                           .img),
                                                                   radius: MediaQuery.of(
                                                                               context)
@@ -516,9 +535,15 @@ class ProfileScreen extends StatelessWidget {
                                                                   .01,
                                                             ),
                                                             Text(
-                                                             userModel.followersList.values.elementAt(index).name,
-                                                                style:const  TextStyle(
-                                                                    fontSize: 15,
+                                                                userModel
+                                                                    .followersList
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .name,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        15,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
@@ -531,7 +556,13 @@ class ProfileScreen extends StatelessWidget {
                                                                           context) *
                                                                   .01,
                                                             ),
-                                                            Text( userModel.followersList.values.elementAt(index).userName,
+                                                            Text(
+                                                                userModel
+                                                                    .followersList
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .userName,
                                                                 style: TextStyle(
                                                                     overflow:
                                                                         TextOverflow
@@ -547,22 +578,29 @@ class ProfileScreen extends StatelessWidget {
                                                       ),
                                                     );
                                                   },
-                                                  itemCount: userModel.followersList.length,
+                                                  itemCount: userModel
+                                                      .followersList.length,
                                                   separatorBuilder:
                                                       (BuildContext context,
                                                           int index) {
                                                     return SizedBox(
                                                       width: 10,
                                                     );
-
                                                   },
                                                   // scrollDirection: Axis.horizontal,
                                                 ),
                                               ),
                                               SizedBox(
-                                                height:cubit.getScreenWidth(context)*.02,
+                                                height: cubit.getScreenWidth(
+                                                        context) *
+                                                    .02,
                                               ),
-                                              Post(model: PostModel(userModel.img), userName: userModel.name, userProfile: userModel.img, onLike: (){},)
+                                              Post(
+                                                model: PostModel(userModel.img),
+                                                userName: userModel.name,
+                                                userProfile: userModel.img,
+                                                onLike: () {},
+                                              )
                                             ],
                                           ),
                                         ),

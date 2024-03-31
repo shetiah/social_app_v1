@@ -18,7 +18,6 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
-
           return Scaffold(
               appBar: PreferredSize(
                 preferredSize:
