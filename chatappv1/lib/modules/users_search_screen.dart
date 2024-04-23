@@ -10,9 +10,7 @@ class UsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (BuildContext context, state) {
-
-      },
+      listener: (BuildContext context, state) {},
       builder: (BuildContext context, state) {
         var cubit = AppCubit.get(context);
         return Scaffold(
@@ -69,11 +67,13 @@ class UsersScreen extends StatelessWidget {
             //           );
             //   },
             // )),
-           if(state is NameSearchingState) Expanded(child: ListView(
-            children:    (cubit.usersCards).toSet().toList(),
-      ))
-          ,if(state is NameSearchingLoadingState)const Center(child: CircularProgressIndicator())
-
+            if (state is NameSearchingState)
+              Expanded(
+                  child: ListView(
+                children: (cubit.usersCards).toSet().toList(),
+              )),
+            if (state is NameSearchingLoadingState)
+              const Center(child: CircularProgressIndicator())
           ],
         ));
       },

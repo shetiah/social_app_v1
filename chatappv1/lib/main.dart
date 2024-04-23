@@ -16,7 +16,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   uId = CacheHelper.getData(key: 'uId');
-  startScreen = (uId == '') ?const LoginScreen() : const HomeScreen();
+  uId ??= '';
+  startScreen = (uId == '') ? const LoginScreen() : const HomeScreen();
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   runApp(const ChatApp());
@@ -37,7 +38,6 @@ class ChatApp extends StatelessWidget {
               return startScreen!;
               // return  RegisterNmImgScreen();
             },
-
           )),
       // home: const HomeScreen(),
     );

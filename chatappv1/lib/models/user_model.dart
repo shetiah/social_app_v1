@@ -1,20 +1,21 @@
 import 'package:chatappv1/models/post_model.dart';
+import 'package:equatable/equatable.dart';
 
-class UserModel {
+class UserModel extends Equatable {
   late String name;
   late String email;
   late String uId;
   late String userName;
-   String img='none';
-   String coverImg='none';
-   String bio='none';
+  String img = 'none';
+  String coverImg = 'none';
+  String bio = 'none';
 
-  Map<String,PostModel> myPosts = {};
-  Map<String,UserModel> followingList = {};
-  Map<String,UserModel> followersList = {};
+  Map<String, PostModel> myPosts = {};
+  Map<String, UserModel> followingList = {};
+  Map<String, UserModel> followersList = {};
 
-  UserModel(
-      this.name, this.email, this.uId, this.userName, this.img, this.coverImg,this.bio);
+  UserModel(this.name, this.email, this.uId, this.userName, this.img,
+      this.coverImg, this.bio);
 
   UserModel.fromJson(Map<String, dynamic>? model) {
     name = model?['name'];
@@ -26,17 +27,14 @@ class UserModel {
     // followersList=model?['followers-list'];
     // followingList=model?['following-list'];
     // myPosts=model?['posts'];
-    bio=model?['bio'];
+    bio = model?['bio'];
   }
 
-  UserModel.followingFromJson(Map<String, dynamic> followersListJson){
+  UserModel.followingFromJson(Map<String, dynamic> followersListJson) {
     followersList.forEach((key, value) {
-    // this.followersList.addAll()
-  });
-    for(int i =0;i<followersListJson.length;i++)
-      {
-
-      }
+      // this.followersList.addAll()
+    });
+    for (int i = 0; i < followersListJson.length; i++) {}
   }
   // UserModel.followingFromJson(Map<String, dynamic>? followingListJson){
   //
@@ -53,7 +51,21 @@ class UserModel {
       'posts': myPosts.keys.toList(),
       'following-list': followingList.keys.toList(),
       'followers-list': followersList.keys.toList(),
-      'bio' :bio
+      'bio': bio
     };
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        name,
+        email,
+        img,
+        coverImg,
+        followersList,
+        followersList,
+        bio,
+        userName,
+        uId,
+      ];
 }

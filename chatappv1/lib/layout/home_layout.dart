@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   centerTitle: true,
                   actions: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         cubit.signOut(context);
                       },
                       child: Padding(
@@ -62,7 +62,8 @@ class HomeScreen extends StatelessWidget {
                           ),
 
                           child: Padding(
-                            padding:  EdgeInsets.all(cubit.getScreenWidth(context)*.02),
+                            padding: EdgeInsets.all(
+                                cubit.getScreenWidth(context) * .02),
                             child: const Text('SIGN OUT',
                                 style: TextStyle(
                                     fontSize: 13,

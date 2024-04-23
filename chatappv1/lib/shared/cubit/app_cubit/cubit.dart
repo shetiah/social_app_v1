@@ -25,17 +25,11 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   getScreenWidth(context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .width;
+    return MediaQuery.of(context).size.width;
   }
 
   getScreenHeight(context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .height;
+    return MediaQuery.of(context).size.height;
   }
 
   bool isBottomSheetShownPostScreen = false;
@@ -45,7 +39,7 @@ class AppCubit extends Cubit<AppStates> {
   var bioTextFieldFocus = FocusNode();
   List<Widget> screens = [
     const UserHomeScreen(),
-     PostScreen(),
+    PostScreen(),
     const UsersScreen(),
     const ChatsScreen(),
     const ProfileScreen(),
@@ -67,20 +61,18 @@ class AppCubit extends Cubit<AppStates> {
     return ret;
   }
 
-  onImagePosting()
-  async {
+  onImagePosting() async {
     emit(UploadImageOnPostLoading());
     try {
       final XFile? image = await ImagePicker().pickImage(
         source: ImageSource.gallery,
       );
       if (image != null) {
-        File imgFile=File(image.path);
+        File imgFile = File(image.path);
         // profileImageFile = File(image.path);
 
-       // await onImagePostingFirebaseStorage(imgFile: imgFile);
-        emit(UploadImageOnPostSuccess(imgFile:imgFile));
-
+        // await onImagePostingFirebaseStorage(imgFile: imgFile);
+        emit(UploadImageOnPostSuccess(imgFile: imgFile));
       } else {
         print('No image selected.');
         // emit(ProfileEditErrorState());
@@ -93,15 +85,13 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<String?> onImagePostingFirebaseStorage({required File imgFile}) async {
     emit(UploadImageOnPostLoadingFirebaseStorage());
-  return  await storageRef
-        .child(
-        'users/images/${Uri.file(imgFile.path).pathSegments.last}')
+    return await storageRef
+        .child('users/images/${Uri.file(imgFile.path).pathSegments.last}')
         .putFile(imgFile)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         // updateProfileImageOnFireStore(imagePath: value);
         emit(UploadImageOnPostSuccessFirebaseStorage(imgPath: value));
-
       }).catchError((error) {
         print(error.toString());
         return error.toString();
@@ -130,7 +120,6 @@ class AppCubit extends Cubit<AppStates> {
   //   }
   // }
 
-
   // var postFormKey= GlobalKey<FormKe>
 
   // double containerSize=getScreenHeight(context) * .2;
@@ -143,7 +132,7 @@ class AppCubit extends Cubit<AppStates> {
 // Widget defHomeWidget=cubit.bottomNavIndex==1? navigateTo(context,PostScreen()) :
   void changeIndex(index, context) {
     if (index == 1) {
-      navigateTo(context,  PostScreen());
+      navigateTo(context, PostScreen());
       emit(ChangeBottomToPostScreen());
     } else {
       bottomNavIndex = index;
@@ -484,9 +473,8 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<void> searching(String searched) async {
     // if()
-    usersCards = [];
-
     emit(NameSearchingLoadingState());
+    usersCards = [];
 
     // if( searchController.text=='')
     // usersCards = [];
